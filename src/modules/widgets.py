@@ -84,4 +84,4 @@ class DragButton(DashboardWidget):
         
     def buttonClicked(self):
         #if event.button() == QtCore.Qt.LeftButton:
-        print 'button clicked'    
+        print 'button clicked'

@@ -5,7 +5,8 @@ import rospy
 import sys
 from PyQt4 import QtGui, QtCore
 
-from modules.props import DashboardProperties, WidgetProperties
+from modules.props import DashboardProperties, WidgetProperties,\
+    WidgetPropertiesDialog
 from modules.widgets import DragButton, DragDial
 
 """
@@ -35,12 +36,12 @@ class Dashboard(QtGui.QGroupBox):
         self.button = DragButton('Button', self)
         self.button.move(100, 65)
         
-        self.button.rightClicked.connect(self.selectionChanged)
+        self.button.rightClicked.connect(self.showWidgetDialog)
         
         self.dial = DragDial(self)
         self.dial.move(100, 150)
         
-        self.dial.rightClicked.connect(self.selectionChanged)
+        self.dial.rightClicked.connect(self.showWidgetDialog)
         
         #self.multiple = Multiple('multi', self)
         #self.multiple.move(100, 100)
@@ -52,9 +53,10 @@ class Dashboard(QtGui.QGroupBox):
         widgetProps.setProperty('datafield', 'linear_velocity')
         self.props.setProperties(1, widgetProps)
         
-    def selectionChanged(self):
+    def showWidgetDialog(self):
         print('selection changed from ' + str(self.sender()))
-        #TODO: lookup widget (by id?) and update currentWidget (and properties?)
+        #TODO: lookup widget properties and display the dialog
+        dialog = WidgetPropertiesDialog(self, self.props.getProperties(1))
         
     def dragEnterEvent(self, e):
         
