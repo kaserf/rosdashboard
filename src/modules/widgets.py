@@ -7,9 +7,6 @@ from modules.props import WidgetProperty, WidgetPropertiesDialog
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
     
-    """ signal to be emitted when the widget was right clicked """
-    rightClicked = QtCore.pyqtSignal()
-    
     def __init__(self, parent):
         super(DashboardWidget, self).__init__(parent)
         
@@ -29,12 +26,6 @@ class DashboardWidget(QtGui.QGroupBox):
     def mouseReleaseEvent(self, e):
         if e.button() == QtCore.Qt.RightButton:
             self.showConfigDialog()
-            #emit right clicked
-        
-        print('mouseReleaseEvent on DashboardWidget')
-        #QtGui.QPushButton.mousePressEvent(self, e)
-        #if e.button() == QtCore.Qt.LeftButton:
-        #    print 'press'
     
     def showConfigDialog(self):
         dialog = WidgetPropertiesDialog(self, self.props)
