@@ -11,6 +11,7 @@ class DashboardWidget(QtGui.QGroupBox):
         super(DashboardWidget, self).__init__(parent)
         
         self.props = list()
+        self.initProps()
 
     def mouseMoveEvent(self, e):
 
@@ -26,6 +27,12 @@ class DashboardWidget(QtGui.QGroupBox):
     def mouseReleaseEvent(self, e):
         if e.button() == QtCore.Qt.RightButton:
             self.showConfigDialog()
+    
+    def initProps(self):
+        """ this method should be overwritten in the subclass
+            if properties are needed.
+            Examplecode: self.props.append(name, type, value) """
+        raise NotImplementedError('initProps must be implemented in a subclass!')
     
     def showConfigDialog(self):
         dialog = WidgetPropertiesDialog(self, self.props)
@@ -60,6 +67,9 @@ class DragDial(DashboardWidget):
         
         self.setLayout(self.layout)
         
+    def initProps(self):
+        pass
+        
     def initSubscriptions(self):
         rospy.Subscriber("turtle1/pose", Pose, self.subscriptionCallback)
         
@@ -71,8 +81,6 @@ class DragButton(DashboardWidget):
     def __init__(self, title, parent):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
-        
-        self.initProps()
         
         self.initUI(title)
         
