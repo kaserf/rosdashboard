@@ -5,11 +5,36 @@ class WidgetProperty():
     
     def __init__(self, name, propertyType, value = None):
         self.name = name
-        self.propertyTtype = propertyType
+        self.propertyType = propertyType
         self.value = value
         
+class TextField(QtGui.QWidget):
+    def __init__(self, parent, name, default = None):
+        super(TextField, self).__init__(parent)
+        
+        if default == None:
+            default = ''
+        
+        self.initUI(name, default)
+        
+    def initUI(self, name, default):
+        """ the text field widget consists of a label and a textfield to enter text """
+        self.layout = QtGui.QHBoxLayout()
+        
+        self.label = QtGui.QLabel(name, self)
+        self.layout.addWidget(self.label)
+        self.text = QtGui.QLineEdit(default, self)
+        self.layout.addWidget(self.text)
+        
+        self.setLayout(self.layout)
+    
 class WidgetPropertiesDialog(QtGui.QDialog):
     """ allows to set the properties for a dashboard widget """
+    
+    defaultWidgets = {
+        'text': TextField
+    }
+    
     def __init__(self, parent, properties=None):
         super(WidgetPropertiesDialog, self).__init__(parent)
         
@@ -24,17 +49,15 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         self.buttonBox.accepted.connect(self.dialogAccepted)
         self.buttonBox.rejected.connect(self.dialogRejected)
         
+        self.layout = QtGui.QVBoxLayout()
         
         for prop in self.props:
-            print prop.name
-            #add a label and a text field per entry in the properties
+            """ we add a property field for each property, depending on the type """
+            widget = self.defaultWidgets[prop.propertyType](self, prop.name, prop.value)
+            self.layout.addWidget(widget)
         
-        self.layout = QtGui.QVBoxLayout()
-        self.label = QtGui.QLabel('testlabel', self)
-        self.layout.addWidget(self.label)
-        self.text = QtGui.QTextEdit(self)
-        self.layout.addWidget(self.text)
         
+        # The buttons belong to the bottom of the dialog
         self.layout.addWidget(self.buttonBox)
         
         self.setLayout(self.layout)
