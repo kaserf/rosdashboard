@@ -2,6 +2,7 @@
 from turtlesim.msg import Pose
 from PyQt4 import QtGui, QtCore
 import rospy
+from modules.props import WidgetProperty, WidgetPropertiesDialog
 
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
@@ -11,6 +12,8 @@ class DashboardWidget(QtGui.QGroupBox):
     
     def __init__(self, parent):
         super(DashboardWidget, self).__init__(parent)
+        
+        self.props = list()
 
     def mouseMoveEvent(self, e):
 
@@ -25,12 +28,20 @@ class DashboardWidget(QtGui.QGroupBox):
     
     def mouseReleaseEvent(self, e):
         if e.button() == QtCore.Qt.RightButton:
-            self.rightClicked.emit()
+            self.showConfigDialog()
+            #emit right clicked
         
         print('mouseReleaseEvent on DashboardWidget')
         #QtGui.QPushButton.mousePressEvent(self, e)
         #if e.button() == QtCore.Qt.LeftButton:
         #    print 'press'
+    
+    def showConfigDialog(self):
+        dialog = WidgetPropertiesDialog(self, self.props)
+        dialog.exec_()
+    
+    def getProperties(self):
+        return self.props
        
    
 class DragDial(DashboardWidget):
@@ -69,7 +80,15 @@ class DragButton(DashboardWidget):
     def __init__(self, title, parent):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
+        
+        self.initProps()
+        
         self.initUI(title)
+        
+    def initProps(self):
+        
+        self.props.append(WidgetProperty('datasource', 'text', '/turtle1/pose'))
+        self.props.append(WidgetProperty('datafield', 'text', 'linear_velocity'))
         
     def initUI(self, title):
         
