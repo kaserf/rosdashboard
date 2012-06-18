@@ -35,10 +35,13 @@ class DashboardWidget(QtGui.QGroupBox):
         raise NotImplementedError('initProps must be implemented in a subclass!')
     
     def showConfigDialog(self):
+        """ shows the default properties dialog generated from self.props.
+            If custom properties are needed it should be overwritten in the subclass. """
         dialog = WidgetPropertiesDialog(self, self.props)
         dialog.exec_()
     
     def getProperties(self):
+        """ returns a list of the properties for this widget """
         return self.props
        
    
