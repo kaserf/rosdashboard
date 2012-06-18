@@ -28,6 +28,9 @@ class TextField(QtGui.QWidget):
         
         self.setLayout(self.layout)
         
+    def getValue(self):
+        return self.text.text()
+        
 class NumericField(QtGui.QWidget):
     def __init__(self, parent, name, default = None):
         super(NumericField, self).__init__(parent)
@@ -49,6 +52,9 @@ class NumericField(QtGui.QWidget):
         
         self.setLayout(self.layout)
         
+    def getValue(self):
+        return self.spinBox.value()
+    
 class FloatField(QtGui.QWidget):
     def __init__(self, parent, name, default = None):
         super(FloatField, self).__init__(parent)
@@ -69,6 +75,16 @@ class FloatField(QtGui.QWidget):
         self.layout.addWidget(self.spinBox)
         
         self.setLayout(self.layout)
+        
+    def getValue(self):
+        return self.spinBox.value()
+    
+class PropertyException(Exception):
+    def __init__(self, message):
+        self.message = message
+        
+    def __str__(self):
+        return repr(self.value)
     
 class WidgetPropertiesDialog(QtGui.QDialog):
     """ allows to set the properties for a dashboard widget """
@@ -83,6 +99,7 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         super(WidgetPropertiesDialog, self).__init__(parent)
         
         self.props = properties
+        self.propLookup = dict()
         self.initUI()
         
     def initUI(self):
@@ -97,7 +114,12 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         
         for prop in self.props:
             """ we add a property field for each property, depending on the type """
+            if self.propLookup.has_key(prop.name):
+                raise PropertyException('duplicate key in properties for this widget.')
+            
             widget = self.defaultWidgets[prop.propertyType](self, prop.name, prop.value)
+            #save a reference to the widget, to retrieve the data at dialog.save
+            self.propLookup[prop.name] = widget
             self.layout.addWidget(widget)
         
         
@@ -107,7 +129,10 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         self.setLayout(self.layout)
         
     def dialogAccepted(self):
-        #TODO: check data and safe to properties
+        """ we iterate over the properties and fill them with the new values """
+        for prop in self.props:
+            prop.value = self.propLookup[prop.name].getValue()
+            
         self.accept()
         
     def dialogRejected(self):
