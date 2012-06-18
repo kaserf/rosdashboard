@@ -27,12 +27,56 @@ class TextField(QtGui.QWidget):
         self.layout.addWidget(self.text)
         
         self.setLayout(self.layout)
+        
+class NumericField(QtGui.QWidget):
+    def __init__(self, parent, name, default = None):
+        super(NumericField, self).__init__(parent)
+        
+        if default == None:
+            default = 0
+        
+        self.initUI(name, default)
+        
+    def initUI(self, name, default):
+        """ the numeric field widget consists of a label and a spin box to enter a number """
+        self.layout = QtGui.QHBoxLayout()
+        
+        self.label = QtGui.QLabel(name, self)
+        self.layout.addWidget(self.label)
+        self.spinBox = QtGui.QSpinBox(self)
+        self.spinBox.setValue(default)
+        self.layout.addWidget(self.spinBox)
+        
+        self.setLayout(self.layout)
+        
+class FloatField(QtGui.QWidget):
+    def __init__(self, parent, name, default = None):
+        super(FloatField, self).__init__(parent)
+        
+        if default == None:
+            default = 0.0
+        
+        self.initUI(name, default)
+        
+    def initUI(self, name, default):
+        """ the float field widget consists of a label and a double spin box to enter a float """
+        self.layout = QtGui.QHBoxLayout()
+        
+        self.label = QtGui.QLabel(name, self)
+        self.layout.addWidget(self.label)
+        self.spinBox = QtGui.QDoubleSpinBox(self)
+        self.spinBox.setValue(default)
+        self.layout.addWidget(self.spinBox)
+        
+        self.setLayout(self.layout)
     
 class WidgetPropertiesDialog(QtGui.QDialog):
     """ allows to set the properties for a dashboard widget """
     
     defaultWidgets = {
-        'text': TextField
+        'text': TextField,
+        'numeric': NumericField,
+        'float': FloatField
     }
     
     def __init__(self, parent, properties=None):
