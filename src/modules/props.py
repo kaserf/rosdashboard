@@ -3,8 +3,7 @@ from PyQt4 import QtGui
 
 class WidgetProperty():
     
-    def __init__(self, name, propertyType, value = None):
-        self.name = name
+    def __init__(self, propertyType, value = None):
         self.propertyType = propertyType
         self.value = value
         
@@ -112,14 +111,11 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         
         self.layout = QtGui.QVBoxLayout()
         
-        for prop in self.props:
+        for propKey, prop in self.props.iteritems():
             """ we add a property field for each property, depending on the type """
-            if self.propLookup.has_key(prop.name):
-                raise PropertyException('duplicate key in properties for this widget.')
-            
-            widget = self.defaultWidgets[prop.propertyType](self, prop.name, prop.value)
+            widget = self.defaultWidgets[prop.propertyType](self, propKey, prop.value)
             #save a reference to the widget, to retrieve the data at dialog.save
-            self.propLookup[prop.name] = widget
+            self.propLookup[propKey] = widget
             self.layout.addWidget(widget)
         
         
@@ -130,8 +126,8 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         
     def dialogAccepted(self):
         """ we iterate over the properties and fill them with the new values """
-        for prop in self.props:
-            prop.value = self.propLookup[prop.name].getValue()
+        for propKey, prop  in self.props.iteritems():
+            prop.value = self.propLookup[propKey].getValue()
             
         self.accept()
         

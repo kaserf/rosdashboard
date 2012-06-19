@@ -18,7 +18,7 @@ class DashboardWidget(QtGui.QGroupBox):
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.ctxMenuRequested)
         
-        self.props = list()
+        self.props = dict()
         self.initProps()
         
     def initContextMenu(self):
@@ -51,8 +51,8 @@ class DashboardWidget(QtGui.QGroupBox):
     
     def initProps(self):
         """ this method should be overwritten in the subclass
-            if properties are needed.
-            Examplecode: self.props.append(name, type, value) """
+            if properties are needed. Examplecode to add properties: 
+            self.props[name] = WidgetProperty(name, type, value) """
         raise NotImplementedError('initProps must be implemented in a subclass!')
 
 
@@ -68,7 +68,7 @@ class DashboardWidget(QtGui.QGroupBox):
         dialog.exec_()
     
     def getProperties(self):
-        """ returns a list of the properties for this widget """
+        """ returns a dictionary of the properties for this widget """
         return self.props
        
    
@@ -116,10 +116,10 @@ class DragButton(DashboardWidget):
         
     def initProps(self):
         
-        self.props.append(WidgetProperty('datasource', 'text', '/turtle1/pose'))
-        self.props.append(WidgetProperty('datafield', 'text', 'linear_velocity'))
-        self.props.append(WidgetProperty('numeric', 'numeric', 17))
-        self.props.append(WidgetProperty('float', 'float', 17.9))
+        self.props['datasource'] = WidgetProperty('text', '/turtle1/pose')
+        self.props['datafield'] = WidgetProperty('text', 'linear_velocity')
+        self.props['numeric'] = WidgetProperty('numeric', 17)
+        self.props['float'] = WidgetProperty('float', 17.9)
         
     def initUI(self, title):
         
