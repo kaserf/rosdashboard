@@ -65,7 +65,14 @@ class DashboardWidget(QtGui.QGroupBox):
         """ shows the default properties dialog generated from self.props.
             If custom properties are needed it should be overwritten in the subclass. """
         dialog = WidgetPropertiesDialog(self, self.props)
+        dialog.accepted.connect(self.propertiesDialogAccepted)
         dialog.exec_()
+        
+    def propertiesDialogAccepted(self):
+        """ this method will be hooked to the properties dialog accept signal.
+            It should be overwritten in a subclass if special functionality
+            (e.g. updating the widget) is needed. """
+        pass
     
     def getProperties(self):
         """ returns a dictionary of the properties for this widget """
@@ -98,7 +105,13 @@ class DragDial(DashboardWidget):
         self.setLayout(self.layout)
         
     def initProps(self):
-        pass
+        self.props['minimum'] = WidgetProperty('numeric', -2)
+        self.props['maximum'] = WidgetProperty('numeric', 2)
+    
+    def propertiesDialogAccepted(self):
+        #update the widget properties
+        self.dial.setMinimum(self.props['minimum'].value)
+        self.dial.setMaximum(self.props['maximum'].value)
         
     def initSubscriptions(self):
         rospy.Subscriber("turtle1/pose", Pose, self.subscriptionCallback)
