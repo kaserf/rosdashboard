@@ -46,6 +46,9 @@ class NumericField(QtGui.QWidget):
         self.label = QtGui.QLabel(name, self)
         self.layout.addWidget(self.label)
         self.spinBox = QtGui.QSpinBox(self)
+        #the range is hardcoded here due to QSpinBox restrictions.
+        #If you need a higher range you should subclass the dialog
+        self.spinBox.setRange(-1000, 1000)
         self.spinBox.setValue(default)
         self.layout.addWidget(self.spinBox)
         
@@ -70,6 +73,10 @@ class FloatField(QtGui.QWidget):
         self.label = QtGui.QLabel(name, self)
         self.layout.addWidget(self.label)
         self.spinBox = QtGui.QDoubleSpinBox(self)
+        #the range is hardcoded here due to QDoubleSpinBox restrictions.
+        #If you need a higher range you should subclass the dialog
+        self.spinBox.setRange(-1000, 1000)
+        self.spinBox.setSingleStep(0.5)
         self.spinBox.setValue(default)
         self.layout.addWidget(self.spinBox)
         
