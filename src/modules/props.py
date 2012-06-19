@@ -138,3 +138,36 @@ class WidgetPropertiesDialog(QtGui.QDialog):
     def dialogRejected(self):
         self.reject()
         
+class WidgetRenameDialog(QtGui.QDialog):
+    """ allows to set a name for a dashboard widget """
+    def __init__(self, parent, defaultName = ''):
+        super(WidgetRenameDialog, self).__init__(parent)
+        
+        #save a reference to the parent, to set the title after accept
+        self.parent = parent
+        
+        self.initUI(defaultName)
+        
+    def initUI(self, defaultName):
+        self.buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Cancel | 
+                                                QtGui.QDialogButtonBox.Save, 
+                                                parent=self)
+        
+        self.buttonBox.accepted.connect(self.dialogAccepted)
+        self.buttonBox.rejected.connect(self.dialogRejected)
+        
+        self.textField = TextField(self, 'Widget name: ', defaultName)
+        
+        self.layout = QtGui.QVBoxLayout()
+        self.layout.addWidget(self.textField)
+        self.layout.addWidget(self.buttonBox)
+        
+        self.setLayout(self.layout)
+        
+    def dialogAccepted(self):
+        if self.textField.getValue() != '':
+            self.parent.setTitle(self.textField.getValue())
+            self.accept()
+        
+    def dialogRejected(self):
+        self.reject()
