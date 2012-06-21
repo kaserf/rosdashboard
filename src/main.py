@@ -6,6 +6,7 @@ import sys
 from PyQt4 import QtGui
 
 from modules.dashboard import Dashboard
+from modules.toolbox import Toolbox
 
 """
 def callback(data, l):
@@ -28,8 +29,14 @@ def main():
     
     layout = QtGui.QHBoxLayout()
     
+    toolbox = Toolbox(w)
+    layout.addWidget(toolbox)
+    
     dashboard = Dashboard(w)
     layout.addWidget(dashboard)
+    
+    layout.setStretch(0, 20)
+    layout.setStretch(1, 80)
     
     #dashboard.selectionChanged.connect(properties.widgetSelected)
     
