@@ -6,15 +6,7 @@ import sys
 from PyQt4 import QtGui
 
 from modules.dashboard import Dashboard
-from modules.toolbox import Toolbox
-
-"""
-def callback(data, l):
-    l.setText(data.data)
-    l.resize(l.sizeHint())
-    rospy.loginfo(rospy.get_name()+"I heard %s",data.data)
-"""
-        
+from modules.toolbox import Toolbox        
         
 def main():
     
@@ -38,13 +30,8 @@ def main():
     layout.setStretch(0, 20)
     layout.setStretch(1, 80)
     
-    #dashboard.selectionChanged.connect(properties.widgetSelected)
-    
     w.setLayout(layout)
     w.show()
-
-    #rospy.Subscriber("chatter", String, callback, l)
-    #rospy.spin()
     
     sys.exit(app.exec_())
     
