@@ -1,4 +1,5 @@
 from PyQt4 import QtGui, QtCore
+from modules.widgets import DragButton
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """
@@ -12,15 +13,39 @@ class Toolbox(QtGui.QGroupBox):
 
         self.setTitle('Widgets')
         
-        self.listView = QtGui.QListView(self)
+        #set up scroll area
+        self.scrollArea = QtGui.QScrollArea(self)
         
-        list_data = [1,2,3,4]
-        lm = WidgetListModel(list_data, self)
-        self.listView.setModel(lm)
+        self.innerLayout = QtGui.QVBoxLayout()
+        self.widgetContainer = QtGui.QWidget()
         
-        self.layout = QtGui.QVBoxLayout()
-        self.layout.addWidget(self.listView)
-        self.setLayout(self.layout)
+        button1 = DragButton("test1", self)
+        self.innerLayout.addWidget(button1)
+        button2 = DragButton("test2", self)
+        self.innerLayout.addWidget(button2)
+        button3 = DragButton("test3", self)
+        self.innerLayout.addWidget(button3)
+        button4 = DragButton("test4", self)
+        self.innerLayout.addWidget(button4)
+        button5 = DragButton("test5", self)
+        self.innerLayout.addWidget(button5)
+        button6 = DragButton("test6", self)
+        self.innerLayout.addWidget(button6)
+        button7 = DragButton("test7", self)
+        self.innerLayout.addWidget(button7)
+        button8 = DragButton("test8", self)
+        self.innerLayout.addWidget(button8)
+        button9 = DragButton("test9", self)
+        self.innerLayout.addWidget(button9)
+        
+        self.widgetContainer.setLayout(self.innerLayout)
+        
+        self.scrollArea.setWidget(self.widgetContainer)
+        
+        #place the scrollarea in the groupbox
+        self.outerLayout = QtGui.QVBoxLayout()
+        self.outerLayout.addWidget(self.scrollArea)
+        self.setLayout(self.outerLayout)
         
         self.setAcceptDrops(True)
         
@@ -35,17 +60,3 @@ class Toolbox(QtGui.QGroupBox):
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
         
-class WidgetListModel(QtCore.QAbstractListModel): 
-    def __init__(self, data, parent=None): 
-        """ data should be a list of DashboardWidgets """
-        QtCore.QAbstractListModel.__init__(self, parent) 
-        self.listdata = data
- 
-    def rowCount(self, parent=QtCore.QModelIndex()): 
-        return len(self.listdata) 
- 
-    def data(self, index, role): 
-        if index.isValid() and role == QtCore.Qt.DisplayRole:
-            return QtCore.QVariant(self.listdata[index.row()])
-        else: 
-            return QtCore.QVariant()
