@@ -81,6 +81,11 @@ class DashboardWidget(QtGui.QGroupBox):
    
 class DragDial(DashboardWidget):
     """ draggable dial and lcd display """
+    MIN = 'minimum'
+    MAX = 'maximum'
+    DATASOURCE = 'datasource'
+    DATAFIELD = 'datafield'
+    
     def __init__(self, parent):
         super(DragDial, self).__init__(parent)
         self.setTitle('DragDial')
@@ -90,8 +95,6 @@ class DragDial(DashboardWidget):
     def initUI(self):
         self.layout = QtGui.QVBoxLayout()
         self.dial = QtGui.QDial(self)
-        self.dial.setMinimum(-2)
-        self.dial.setMaximum(2)
         self.dial.setSliderPosition(0)
         self.dial.setDisabled(True)
         
@@ -102,22 +105,41 @@ class DragDial(DashboardWidget):
         self.layout.addWidget(self.dial)
         self.layout.addWidget(self.lcd)
         
+        #update widget according to properties
+        self.updateWidget()
+        
         self.setLayout(self.layout)
         
     def initProps(self):
-        self.props['minimum'] = WidgetProperty('numeric', -2)
-        self.props['maximum'] = WidgetProperty('numeric', 2)
+        self.props[self.MIN] = WidgetProperty('numeric', -2)
+        self.props[self.MAX] = WidgetProperty('numeric', 2)
+        self.props[self.DATASOURCE] = WidgetProperty('text', '/turtle1/pose')
+        self.props[self.DATAFIELD] = WidgetProperty('text', 'linear_velocity')
     
     def propertiesDialogAccepted(self):
+        self.updateWidget()
+        
+        #re-setup the subscription
+        self.subscriber.unregister()
+        self.initSubscriptions()
+        
+    def updateWidget(self):
         #update the widget properties
-        self.dial.setMinimum(self.props['minimum'].value)
-        self.dial.setMaximum(self.props['maximum'].value)
+        self.dial.setMinimum(self.props[self.MIN].value)
+        self.dial.setMaximum(self.props[self.MAX].value)
         
     def initSubscriptions(self):
-        rospy.Subscriber("turtle1/pose", Pose, self.subscriptionCallback)
+        #FIXME: the cast to string is a workaround because subscriber only accepts python strings and not QStrings
+        #TODO: inspect type of message? go down to low level messaging?
+        self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), Pose, self.subscriptionCallback)
+        #self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), self.subscriptionCallback)
         
     def subscriptionCallback(self, data):
-        self.dial.setValue(int(data.linear_velocity))
+        #FIXME: remove cast to string
+        #print data.__slots__
+        #print data._slot_types
+        datafield = getattr(data, str(self.props[self.DATAFIELD].value))
+        self.dial.setValue(int(datafield))
         
 class DragButton(DashboardWidget):
     """ drag button wrapper """
