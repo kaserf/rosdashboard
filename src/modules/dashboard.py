@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from modules.widgets import DragButton, DragDial
+from modules.widgets import DragButton, DragDial, DashboardWidget
 
 class Dashboard(QtGui.QGroupBox):
     """ canvas where widgets can be positioned """ 
@@ -28,7 +28,15 @@ class Dashboard(QtGui.QGroupBox):
 
     def dropEvent(self, e):
 
-        e.source().move(e.pos())
+        if isinstance(e.source(), DashboardWidget):
+            #dashboard widgets are moved on the dashboard
+            e.source().move(e.pos())
 
-        e.setDropAction(QtCore.Qt.MoveAction)
-        e.accept()
+            e.setDropAction(QtCore.Qt.MoveAction)
+            e.accept()
+        else:
+            #this happens if a element from the widget list gets dropped
+            #TODO: typecheck?
+            print "something else dropped"
+        
+        
