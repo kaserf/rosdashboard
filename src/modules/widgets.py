@@ -143,11 +143,11 @@ class DragDial(DashboardWidget):
         
 class DragButton(DashboardWidget):
     """ drag button wrapper """
-    def __init__(self, title, parent):
+    def __init__(self, parent):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
         
-        self.initUI(title)
+        self.initUI("Button")
         
     def initProps(self):
         

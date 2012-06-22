@@ -16,7 +16,7 @@ class Dashboard(QtGui.QGroupBox):
         self.setTitle('Dashboard')
         self.setAcceptDrops(True)
 
-        self.button = DragButton('Button', self)
+        self.button = DragButton(self)
         self.button.move(100, 65)
         
         self.dial = DragDial(self)
