@@ -9,6 +9,7 @@ class Dashboard(QtGui.QGroupBox):
     def __init__(self, parent):
         super(Dashboard, self).__init__(parent)
 
+        self.widgets = list()
         self.initUI()
         
     def initUI(self):
@@ -16,11 +17,22 @@ class Dashboard(QtGui.QGroupBox):
         self.setTitle('Dashboard')
         self.setAcceptDrops(True)
 
-        self.button = DragButton(self)
-        self.button.move(100, 65)
+        #TODO: remove test widgets
+        self.addWidget(DragButton(self), QtCore.QPoint(100, 65))
+        self.addWidget(DragDial(self), QtCore.QPoint(100, 150))
         
-        self.dial = DragDial(self)
-        self.dial.move(100, 150)
+    def addWidget(self, widget, position = None):
+        """ add widgets to the dashboard """
+        if not isinstance(widget, DashboardWidget):
+            raise TypeError("The widget you want to add is not a DashboardWidget")
+        
+        if position == None:
+            #TODO: find a free spot and move widget to the free spot
+            position = QtCore.QPoint(100, 100)
+        
+        self.widgets.append(widget)
+        widget.move(position)
+        widget.show()
         
     def dragEnterEvent(self, e):
         
@@ -38,8 +50,6 @@ class Dashboard(QtGui.QGroupBox):
             #this happens if a element from the widget list gets dropped
             #TODO: typecheck for elements coming from the toolbox??
             itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
-            itemDataInstance.move(e.pos())
-            itemDataInstance.show()
-            print "something else dropped"
+            self.addWidget(itemDataInstance, e.pos())
         
         
