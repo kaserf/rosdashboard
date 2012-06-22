@@ -23,7 +23,3 @@ class Toolbox(QtGui.QGroupBox):
         self.layout = QtGui.QVBoxLayout()
         self.layout.addWidget(self.listWidget)
         self.setLayout(self.layout)
-        
-    def dragEnterEvent(self, e):
-        
-        e.accept()
