@@ -36,7 +36,10 @@ class Dashboard(QtGui.QGroupBox):
             e.accept()
         else:
             #this happens if a element from the widget list gets dropped
-            #TODO: typecheck?
+            #TODO: typecheck for elements coming from the toolbox??
+            itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
+            itemDataInstance.move(e.pos())
+            itemDataInstance.show()
             print "something else dropped"
         
         

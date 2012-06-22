@@ -1,4 +1,5 @@
 from PyQt4 import QtGui, QtCore
+from modules.widgets import DragButton, DragDial
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """
@@ -7,6 +8,7 @@ class Toolbox(QtGui.QGroupBox):
         super(Toolbox, self).__init__(parent)
 
         self.initUI()
+        self.populateList()
         
     def initUI(self):
 
@@ -17,9 +19,16 @@ class Toolbox(QtGui.QGroupBox):
         self.listWidget.setDragEnabled(True)
         self.listWidget.setDropIndicatorShown(True)
         
-        self.listWidget.addItem("dragbutton")
-        self.listWidget.addItem("dragdial")
-        
         self.layout = QtGui.QVBoxLayout()
         self.layout.addWidget(self.listWidget)
         self.setLayout(self.layout)
+        
+    def populateList(self):
+        
+        #TODO: iterate over a list of available widgets -> plugins
+        dragButtonItem = QtGui.QListWidgetItem("button")
+        dragButtonItem.setData(QtCore.Qt.UserRole, DragButton)
+        self.listWidget.addItem(dragButtonItem)
+        dragDialItem = QtGui.QListWidgetItem("dial")
+        dragDialItem.setData(QtCore.Qt.UserRole, DragDial)
+        self.listWidget.addItem(dragDialItem)
