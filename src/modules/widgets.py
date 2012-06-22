@@ -155,6 +155,8 @@ class DragButton(DashboardWidget):
         self.props['datafield'] = WidgetProperty('text', 'linear_velocity')
         self.props['numeric'] = WidgetProperty('numeric', 17)
         self.props['float'] = WidgetProperty('float', 17.9)
+        self.props['buttonText'] = WidgetProperty('text', "Push Me!")
+        #FIXME: default should be set from the constructor param title
         
     def initUI(self, title):
         
@@ -170,3 +172,6 @@ class DragButton(DashboardWidget):
     def buttonClicked(self):
         #if event.button() == QtCore.Qt.LeftButton:
         print 'button clicked'
+    
+    def propertiesDialogAccepted(self):
+        self.button.setText(self.props['buttonText'].value)
