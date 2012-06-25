@@ -138,8 +138,6 @@ class DragDial(DashboardWidget):
         
     def subscriptionCallback(self, data):
         #FIXME: remove cast to string
-        #print data.__slots__
-        #print data._slot_types
         datafield = getattr(data, str(self.props[self.DATAFIELD].value))
         self.dial.setValue(int(datafield))
         
