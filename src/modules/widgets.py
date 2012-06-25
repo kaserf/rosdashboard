@@ -4,6 +4,7 @@ from PyQt4 import QtGui, QtCore
 import rospy
 from modules.props import WidgetProperty, WidgetPropertiesDialog,\
     WidgetRenameDialog
+import rostopic
 
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
@@ -130,9 +131,10 @@ class DragDial(DashboardWidget):
         
     def initSubscriptions(self):
         #FIXME: the cast to string is a workaround because subscriber only accepts python strings and not QStrings
-        #TODO: inspect type of message? go down to low level messaging?
-        self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), Pose, self.subscriptionCallback)
-        #self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), self.subscriptionCallback)
+        #introspect the type class of the message
+        data_class = rostopic.get_topic_class(self.props[self.DATASOURCE].value, blocking=False)[0]
+        if data_class:
+            self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), data_class, self.subscriptionCallback)
         
     def subscriptionCallback(self, data):
         #FIXME: remove cast to string
