@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from modules.widgets import DragButton, DragDial, DashboardWidget
+from modules.widgets import DashboardWidget
 
 class Dashboard(QtGui.QGroupBox):
     """ canvas where widgets can be positioned """ 
@@ -14,10 +14,6 @@ class Dashboard(QtGui.QGroupBox):
 
         self.setTitle('Dashboard')
         self.setAcceptDrops(True)
-
-        #TODO: remove test widgets
-        self.addWidget(DragButton(self), QtCore.QPoint(100, 65))
-        self.addWidget(DragDial(self), QtCore.QPoint(100, 150))
         
     def addWidget(self, widget, position = None):
         """ add widgets to the dashboard """
