@@ -145,7 +145,10 @@ class DragButton(DashboardWidget):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
         
-        self.initUI("Button")
+        self.initUI()
+        
+        #initially configure the widget from settings
+        self.updateWidget()
         
     def initProps(self):
         
@@ -154,11 +157,10 @@ class DragButton(DashboardWidget):
         self.props['numeric'] = WidgetProperty('numeric', 17)
         self.props['float'] = WidgetProperty('float', 17.9)
         self.props['buttonText'] = WidgetProperty('text', "Push Me!")
-        #FIXME: default should be set from the constructor param title
         
-    def initUI(self, title):
+    def initUI(self):
         
-        self.button = QtGui.QPushButton(title, self)
+        self.button = QtGui.QPushButton(self)
         self.button.setDisabled(True)
         #self.button.clicked.connect(self.buttonClicked)
         
@@ -172,4 +174,7 @@ class DragButton(DashboardWidget):
         print 'button clicked'
     
     def propertiesDialogAccepted(self):
+        self.updateWidget()
+        
+    def updateWidget(self):
         self.button.setText(self.props['buttonText'].value)
