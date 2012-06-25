@@ -3,8 +3,6 @@ from modules.widgets import DragButton, DragDial, DashboardWidget
 
 class Dashboard(QtGui.QGroupBox):
     """ canvas where widgets can be positioned """ 
-    
-    #selectionChanged = QtCore.pyqtSignal()
       
     def __init__(self, parent):
         super(Dashboard, self).__init__(parent)
