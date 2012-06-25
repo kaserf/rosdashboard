@@ -1,5 +1,3 @@
-
-from turtlesim.msg import Pose
 from PyQt4 import QtGui, QtCore
 import rospy
 from modules.props import WidgetProperty, WidgetPropertiesDialog,\
