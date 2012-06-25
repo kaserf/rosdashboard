@@ -30,7 +30,11 @@ class Dashboard(QtGui.QGroupBox):
         
     def dragEnterEvent(self, e):
         
-        e.accept()
+        #check if the drag comes from a valid item
+        if isinstance(e.source(), DashboardWidget) or isinstance(e.source(), QtGui.QListWidget):
+            e.accept()
+        else:
+            e.ignore()
 
     def dropEvent(self, e):
 
@@ -40,10 +44,12 @@ class Dashboard(QtGui.QGroupBox):
 
             e.setDropAction(QtCore.Qt.MoveAction)
             e.accept()
-        else:
+        elif isinstance(e.source(), QtGui.QListWidget):
             #this happens if a element from the widget list gets dropped
-            #TODO: typecheck for elements coming from the toolbox??
             itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
             self.addWidget(itemDataInstance, e.pos())
-        
-        
+            
+            e.accept()
+        else:
+            e.ignore()
+            raise TypeError('The source for this kind of drag element is not allowed: ' + str(e.source()))
