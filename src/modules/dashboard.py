@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from modules.widgets import DashboardWidget
+from modules.dashboardWidgets import DashboardWidget
 
 class Dashboard(QtGui.QWidget):
     """ canvas where widgets can be positioned """ 

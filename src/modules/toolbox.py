@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore
-from modules.widgets import DragButton, DragDial
+from widgets.dragButton import DragButton
+from widgets.dragDial import DragDial
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """
