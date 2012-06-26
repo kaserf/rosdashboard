@@ -27,9 +27,12 @@ class Toolbox(QtGui.QGroupBox):
     def populateList(self):
         
         #TODO: iterate over a list of available widgets -> plugins
-        dragButtonItem = QtGui.QListWidgetItem("button")
+        dragButtonItem = QtGui.QListWidgetItem("Button")
+        style = QtGui.QApplication.style()
+        dragButtonItem.setIcon(style.standardIcon(QtGui.QStyle.SP_ComputerIcon))
         dragButtonItem.setData(QtCore.Qt.UserRole, DragButton)
         self.listWidget.addItem(dragButtonItem)
-        dragDialItem = QtGui.QListWidgetItem("dial")
+        dragDialItem = QtGui.QListWidgetItem("Dial")
+        dragDialItem.setIcon(style.standardIcon(QtGui.QStyle.SP_BrowserReload))
         dragDialItem.setData(QtCore.Qt.UserRole, DragDial)
         self.listWidget.addItem(dragDialItem)
