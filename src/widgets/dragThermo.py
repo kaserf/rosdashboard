@@ -5,34 +5,28 @@ import rospy
 from modules.dashboardWidgets import DashboardWidget
 from PyQt4.Qwt5 import Qwt
 
-class DragDial(DashboardWidget):
-    """ draggable dial and lcd display """
+class DragThermo(DashboardWidget):
+    """ draggable thermo """
     MIN = 'minimum'
     MAX = 'maximum'
     DATASOURCE = 'datasource'
     DATAFIELD = 'datafield'
     
     def __init__(self, parent):
-        super(DragDial, self).__init__(parent)
-        self.setTitle('DragDial')
+        super(DragThermo, self).__init__(parent)
+        self.setTitle('DragThermo')
         self.initUI()
         self.initSubscriptions()
         
     def initUI(self):
         self.layout = QtGui.QVBoxLayout()
-        self.qwtDial = Qwt.QwtDial(self)
-        self.qwtDial.setRange(-5,5)
-        self.qwtDial.setDisabled(True)
+        self.qwtThermo = Qwt.QwtThermo(self)
+        self.qwtThermo.setRange(-5,5)
+        self.qwtThermo.setDisabled(True)
         #TODO Make widgets resizeable
-        self.qwtDial.setFixedSize(150, 150)
-        self.qwtDial.setNeedle(Qwt.QwtDialSimpleNeedle(Qwt.QwtDialSimpleNeedle.Ray))
+        self.qwtThermo.setFixedHeight(150)
         
-        self.lcd = QtGui.QLCDNumber(self)
-        self.lcd.setSegmentStyle(QtGui.QLCDNumber.Flat)
-        self.qwtDial.valueChanged.connect(self.lcd.display)
-        
-        self.layout.addWidget(self.qwtDial)
-        self.layout.addWidget(self.lcd)
+        self.layout.addWidget(self.qwtThermo)
         
         #update widget according to properties
         self.updateWidget()
@@ -54,8 +48,8 @@ class DragDial(DashboardWidget):
         
     def updateWidget(self):
         #update the widget properties
-        self.qwtDial.setRange(self.props[self.MIN].value,
-                              self.props[self.MAX].value)
+        self.qwtThermo.setRange(self.props[self.MIN].value,
+                                self.props[self.MAX].value)
         
     def initSubscriptions(self):
         #FIXME: the cast to string is a workaround because subscriber only accepts python strings and not QStrings
@@ -69,4 +63,4 @@ class DragDial(DashboardWidget):
     def subscriptionCallback(self, data):
         #FIXME: remove cast to string
         datafield = getattr(data, str(self.props[self.DATAFIELD].value))
-        self.qwtDial.setValue(datafield)
+        self.qwtThermo.setValue(datafield)

@@ -1,37 +1,36 @@
+from modules.dashboardWidgets import DashboardWidget
 from PyQt4 import QtGui
+from PyQt4.Qwt5 import Qwt
 from modules.props import WidgetProperty
 import rostopic
 import rospy
-from modules.dashboardWidgets import DashboardWidget
-from PyQt4.Qwt5 import Qwt
 
-class DragDial(DashboardWidget):
-    """ draggable dial and lcd display """
+class DragKnob(DashboardWidget):
+    
     MIN = 'minimum'
     MAX = 'maximum'
     DATASOURCE = 'datasource'
     DATAFIELD = 'datafield'
     
     def __init__(self, parent):
-        super(DragDial, self).__init__(parent)
-        self.setTitle('DragDial')
+        super(DragKnob, self).__init__(parent)
+        self.setTitle('DragKnob')
         self.initUI()
         self.initSubscriptions()
         
     def initUI(self):
         self.layout = QtGui.QVBoxLayout()
-        self.qwtDial = Qwt.QwtDial(self)
-        self.qwtDial.setRange(-5,5)
-        self.qwtDial.setDisabled(True)
+        self.qwtKnob = Qwt.QwtKnob(self)
+        self.qwtKnob.setRange(-5,5)
+        self.qwtKnob.setDisabled(True)
         #TODO Make widgets resizeable
-        self.qwtDial.setFixedSize(150, 150)
-        self.qwtDial.setNeedle(Qwt.QwtDialSimpleNeedle(Qwt.QwtDialSimpleNeedle.Ray))
+        self.qwtKnob.setFixedSize(150, 150)
         
         self.lcd = QtGui.QLCDNumber(self)
         self.lcd.setSegmentStyle(QtGui.QLCDNumber.Flat)
-        self.qwtDial.valueChanged.connect(self.lcd.display)
+        self.qwtKnob.valueChanged.connect(self.lcd.display)
         
-        self.layout.addWidget(self.qwtDial)
+        self.layout.addWidget(self.qwtKnob)
         self.layout.addWidget(self.lcd)
         
         #update widget according to properties
@@ -54,7 +53,7 @@ class DragDial(DashboardWidget):
         
     def updateWidget(self):
         #update the widget properties
-        self.qwtDial.setRange(self.props[self.MIN].value,
+        self.qwtKnob.setRange(self.props[self.MIN].value,
                               self.props[self.MAX].value)
         
     def initSubscriptions(self):
@@ -69,4 +68,4 @@ class DragDial(DashboardWidget):
     def subscriptionCallback(self, data):
         #FIXME: remove cast to string
         datafield = getattr(data, str(self.props[self.DATAFIELD].value))
-        self.qwtDial.setValue(datafield)
+        self.qwtKnob.setValue(datafield)

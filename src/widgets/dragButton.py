@@ -3,7 +3,7 @@ from PyQt4 import QtGui
 from modules.dashboardWidgets import DashboardWidget
 
 class DragButton(DashboardWidget):
-    """ drag button wrapper """
+    """ drag textField wrapper """
     def __init__(self, parent):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
@@ -23,21 +23,21 @@ class DragButton(DashboardWidget):
         
     def initUI(self):
         
-        self.button = QtGui.QPushButton(self)
-        self.button.setDisabled(True)
-        #self.button.clicked.connect(self.buttonClicked)
+        self.textField = QtGui.QPushButton(self)
+        self.textField.setDisabled(True)
+        #self.textField.clicked.connect(self.buttonClicked)
         
         self.layout = QtGui.QVBoxLayout()
-        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.textField)
         
         self.setLayout(self.layout)
         
     def buttonClicked(self):
-        #if event.button() == QtCore.Qt.LeftButton:
-        print 'button clicked'
+        #if event.textField() == QtCore.Qt.LeftButton:
+        print 'textField clicked'
     
     def propertiesDialogAccepted(self):
         self.updateWidget()
         
     def updateWidget(self):
-        self.button.setText(self.props['buttonText'].value)
+        self.textField.setText(self.props['buttonText'].value)
