@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from modules.props import WidgetPropertiesDialog, WidgetRenameDialog
+from rosdashboard.modules.props import WidgetPropertiesDialog, WidgetRenameDialog
 
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """

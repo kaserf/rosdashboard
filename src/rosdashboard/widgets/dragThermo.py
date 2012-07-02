@@ -1,38 +1,55 @@
 from PyQt4 import QtGui
-from modules.props import WidgetProperty
+from rosdashboard.modules.props import WidgetProperty
 import rostopic
 import rospy
-from modules.dashboardWidgets import DashboardWidget
+from rosdashboard.modules.dashboardWidgets import DashboardWidget
+from PyQt4.Qwt5 import Qwt
 
-class DragString(DashboardWidget):
-    """ draggable text field """
+class DragThermo(DashboardWidget):
+    """ draggable thermo """
+    MIN = 'minimum'
+    MAX = 'maximum'
     DATASOURCE = 'datasource'
     DATAFIELD = 'datafield'
     
     def __init__(self, parent):
-        super(DragString, self).__init__(parent)
-        self.setTitle('DragString')
+        super(DragThermo, self).__init__(parent)
+        self.setTitle('DragThermo')
         self.initUI()
         self.initSubscriptions()
         
     def initUI(self):
-        
-        self.textField = QtGui.QLineEdit(self)
-        self.textField.setDisabled(True)
-        
         self.layout = QtGui.QVBoxLayout()
-        self.layout.addWidget(self.textField)
+        self.qwtThermo = Qwt.QwtThermo(self)
+        self.qwtThermo.setRange(-5,5)
+        self.qwtThermo.setDisabled(True)
+        #TODO Make widgets resizeable
+        self.qwtThermo.setFixedHeight(150)
+        
+        self.layout.addWidget(self.qwtThermo)
+        
+        #update widget according to properties
+        self.updateWidget()
         
         self.setLayout(self.layout)
         
     def initProps(self):
+        self.props[self.MIN] = WidgetProperty('numeric', -4)
+        self.props[self.MAX] = WidgetProperty('numeric', 4)
         self.props[self.DATASOURCE] = WidgetProperty('text', '/turtle1/pose')
         self.props[self.DATAFIELD] = WidgetProperty('text', 'linear_velocity')
     
     def propertiesDialogAccepted(self):
+        self.updateWidget()
+        
         #re-setup the subscription
         self.subscriber.unregister()
         self.initSubscriptions()
+        
+    def updateWidget(self):
+        #update the widget properties
+        self.qwtThermo.setRange(self.props[self.MIN].value,
+                                self.props[self.MAX].value)
         
     def initSubscriptions(self):
         #FIXME: the cast to string is a workaround because subscriber only accepts python strings and not QStrings
@@ -46,4 +63,4 @@ class DragString(DashboardWidget):
     def subscriptionCallback(self, data):
         #FIXME: remove cast to string
         datafield = getattr(data, str(self.props[self.DATAFIELD].value))
-        self.textField.setText(str(datafield))
+        self.qwtThermo.setValue(datafield)

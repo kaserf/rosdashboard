@@ -1,6 +1,6 @@
-from modules.props import WidgetProperty
+from rosdashboard.modules.props import WidgetProperty
 from PyQt4 import QtGui
-from modules.dashboardWidgets import DashboardWidget
+from rosdashboard.modules.dashboardWidgets import DashboardWidget
 
 class DragButton(DashboardWidget):
     """ drag textField wrapper """

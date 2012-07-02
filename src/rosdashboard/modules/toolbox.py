@@ -1,10 +1,10 @@
 from PyQt4 import QtGui, QtCore
-from widgets.dragButton import DragButton
-from widgets.dragDial import DragDial
-from widgets.dragKnob import DragKnob
-from widgets.dragCompass import DragCompass
-from widgets.dragThermo import DragThermo
-from widgets.dragString import DragString
+from rosdashboard.widgets.dragButton import DragButton
+from rosdashboard.widgets.dragDial import DragDial
+from rosdashboard.widgets.dragKnob import DragKnob
+from rosdashboard.widgets.dragCompass import DragCompass
+from rosdashboard.widgets.dragThermo import DragThermo
+from rosdashboard.widgets.dragString import DragString
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """

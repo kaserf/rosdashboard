@@ -1,8 +1,8 @@
 from PyQt4 import QtGui
-from modules.props import WidgetProperty
+from rosdashboard.modules.props import WidgetProperty
 import rostopic
 import rospy
-from modules.dashboardWidgets import DashboardWidget
+from rosdashboard.modules.dashboardWidgets import DashboardWidget
 from PyQt4.Qwt5 import Qwt
 
 class DragCompass(DashboardWidget):
