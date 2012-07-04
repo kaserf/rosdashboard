@@ -14,6 +14,9 @@ class DragCompass(DashboardWidget):
         super(DragCompass, self).__init__(parent)
         self.setTitle('DragCompass')
         self.initUI()
+        
+        self.subscriber = None
+        
         self.initSubscriptions()
         
     def initUI(self):
@@ -34,7 +37,8 @@ class DragCompass(DashboardWidget):
     
     def propertiesDialogAccepted(self):
         #re-setup the subscription
-        self.subscriber.unregister()
+        if (self.subscriber):
+            self.subscriber.unregister()
         self.initSubscriptions()
         
     def initSubscriptions(self):

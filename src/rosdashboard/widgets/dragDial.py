@@ -16,6 +16,9 @@ class DragDial(DashboardWidget):
         super(DragDial, self).__init__(parent)
         self.setTitle('DragDial')
         self.initUI()
+        
+        self.subscriber = None
+        
         self.initSubscriptions()
         
     def initUI(self):
@@ -49,7 +52,8 @@ class DragDial(DashboardWidget):
         self.updateWidget()
         
         #re-setup the subscription
-        self.subscriber.unregister()
+        if (self.subscriber):
+            self.subscriber.unregister()
         self.initSubscriptions()
         
     def updateWidget(self):

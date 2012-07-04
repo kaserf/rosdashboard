@@ -16,6 +16,9 @@ class DragThermo(DashboardWidget):
         super(DragThermo, self).__init__(parent)
         self.setTitle('DragThermo')
         self.initUI()
+        
+        self.subscriber = None
+        
         self.initSubscriptions()
         
     def initUI(self):
@@ -43,7 +46,8 @@ class DragThermo(DashboardWidget):
         self.updateWidget()
         
         #re-setup the subscription
-        self.subscriber.unregister()
+        if (self.subscriber):
+            self.subscriber.unregister()
         self.initSubscriptions()
         
     def updateWidget(self):

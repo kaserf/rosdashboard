@@ -13,6 +13,9 @@ class DragString(DashboardWidget):
         super(DragString, self).__init__(parent)
         self.setTitle('DragString')
         self.initUI()
+        
+        self.subscriber = None
+        
         self.initSubscriptions()
         
     def initUI(self):
@@ -31,7 +34,8 @@ class DragString(DashboardWidget):
     
     def propertiesDialogAccepted(self):
         #re-setup the subscription
-        self.subscriber.unregister()
+        if (self.subscriber):
+            self.subscriber.unregister()
         self.initSubscriptions()
         
     def initSubscriptions(self):

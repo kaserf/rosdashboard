@@ -16,6 +16,9 @@ class DragKnob(DashboardWidget):
         super(DragKnob, self).__init__(parent)
         self.setTitle('DragKnob')
         self.initUI()
+        
+        self.subscriber = None
+        
         self.initSubscriptions()
         
     def initUI(self):
@@ -48,7 +51,8 @@ class DragKnob(DashboardWidget):
         self.updateWidget()
         
         #re-setup the subscription
-        self.subscriber.unregister()
+        if (self.subscriber):
+            self.subscriber.unregister()
         self.initSubscriptions()
         
     def updateWidget(self):
