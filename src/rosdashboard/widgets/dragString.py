@@ -37,7 +37,9 @@ class DragString(DashboardWidget):
     def initSubscriptions(self):
         #FIXME: the cast to string is a workaround because subscriber only accepts python strings and not QStrings
         #introspect the type class of the message
-        data_class = rostopic.get_topic_class(self.props[self.DATASOURCE].value, blocking=False)[0]
+        
+        data_class = rostopic.get_topic_class(str(self.props[self.DATASOURCE].value), blocking=False)[0]
+        print str(data_class)
         if data_class:
             self.subscriber = rospy.Subscriber(str(self.props[self.DATASOURCE].value), data_class, self.subscriptionCallback)
         else:
