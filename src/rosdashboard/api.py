@@ -49,3 +49,12 @@ def logfloat(tag, value, msg_type=Float32):
     """
     pub = rospy.Publisher('/rosdashboard/' + tag, msg_type)
     pub.publish(msg_type(value))
+
+def logdata(tag, data, msg_type):
+    """
+    publishes arbitrary data to the /rosdashboard/<tag> topic
+    Be careful to use only valid tags, ros does not allow dashes and dots in
+    the topic name.
+    """
+    pub = rospy.Publisher('/rosdashboard/' + tag, msg_type)
+    pub.publish(data)
