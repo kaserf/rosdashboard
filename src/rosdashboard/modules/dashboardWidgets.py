@@ -54,8 +54,15 @@ class DashboardWidget(QtGui.QGroupBox):
 
     def showRenameDialog(self):
         """ shows the default renaming dialog. """
-        dialog = WidgetRenameDialog(self, self.title())
+        dialog = WidgetRenameDialog(self, self._renameDialogCallback, self.title())
         dialog.exec_()
+        
+    def _renameDialogCallback(self, value):
+        """ this method will be hooked to the rename dialog accept signal.
+            It should be overwritten in a subclass if special functionality
+            is needed. """
+        if value != '':
+            self.setTitle(value)
             
     def showConfigDialog(self):
         """ shows the default properties dialog generated from self.props.

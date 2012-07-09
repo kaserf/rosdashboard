@@ -143,11 +143,11 @@ class WidgetPropertiesDialog(QtGui.QDialog):
         
 class WidgetRenameDialog(QtGui.QDialog):
     """ allows to set a name for a dashboard widget """
-    def __init__(self, parent, defaultName = ''):
+    def __init__(self, parent, callback, defaultName = ''):
         super(WidgetRenameDialog, self).__init__(parent)
         
-        #save a reference to the parent, to set the title after accept
-        self.parent = parent
+        #save a reference to the callback, which is called at accept
+        self.callback = callback
         
         self.initUI(defaultName)
         
@@ -168,9 +168,8 @@ class WidgetRenameDialog(QtGui.QDialog):
         self.setLayout(self.layout)
         
     def dialogAccepted(self):
-        if self.textField.getValue() != '':
-            self.parent.setTitle(self.textField.getValue())
-            self.accept()
+        self.callback(self.textField.getValue())
+        self.accept()
         
     def dialogRejected(self):
         self.reject()
