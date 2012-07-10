@@ -16,32 +16,35 @@ class DashboardWidget(QtGui.QGroupBox):
         self.datafield = "datafield"
         self.subscriber = None
         
+        self.props = dict()
+        self.initProps()
+        
         self.initContextMenu()
         
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.ctxMenuRequested)
         
-        self.props = dict()
-        self.initProps()
-        
     def initContextMenu(self):
         """ this method sets up the context menu of the widget. per default it allows
-            you to rename a widget and open the default configuration dialog. """
-        # Actions
+            you to rename a widget and setup the subscription for the widget. if there
+            are properties set in props (see initProps()) then it also shows the
+            default configuration dialog for properties. """
+            
+        self.ctxMenu = QtGui.QMenu(self)
+        
         self.renameAction = QtGui.QAction('Rename', self)
         self.renameAction.triggered.connect(self.showRenameDialog)
-        
-        self.propertiesAction = QtGui.QAction('Properties', self)
-        self.propertiesAction.triggered.connect(self.showConfigDialog)
+        self.ctxMenu.addAction(self.renameAction)
         
         self.subscriptionAction = QtGui.QAction('Subscription', self)
         self.subscriptionAction.triggered.connect(self.showSubscriptionDialog)
-        
-        # Context Menu
-        self.ctxMenu = QtGui.QMenu(self)
-        self.ctxMenu.addAction(self.renameAction)
-        self.ctxMenu.addAction(self.propertiesAction)
         self.ctxMenu.addAction(self.subscriptionAction)
+        
+        # only add properties dialog if there are any props to set.
+        if len(self.props) != 0:
+            self.propertiesAction = QtGui.QAction('Properties', self)
+            self.propertiesAction.triggered.connect(self.showConfigDialog)        
+            self.ctxMenu.addAction(self.propertiesAction)
         
     def ctxMenuRequested(self, point):
         self.ctxMenu.exec_(self.mapToGlobal(point))
