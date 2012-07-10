@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from rosdashboard.modules.dashboardWidgets import DashboardWidget
+import rospy
 
 class Dashboard(QtGui.QWidget):
     """ canvas where widgets can be positioned """ 
@@ -115,9 +116,9 @@ class WidgetContainer(QtGui.QFrame):
         #check if the drag comes from a valid item
         if isinstance(e.source(), DashboardWidget):
             self.parent.showRemoveWidgetBar()
-            e.accept()
+            e.acceptProposedAction()
         elif isinstance(e.source(), QtGui.QListWidget):
-            e.accept()
+            e.acceptProposedAction()
         else:
             e.ignore()
 
@@ -130,10 +131,10 @@ class WidgetContainer(QtGui.QFrame):
             e.setDropAction(QtCore.Qt.MoveAction)
             
             self.parent.hideRemoveWidgetBar()
-            e.accept()
+            e.acceptProposedAction()
         elif isinstance(e.source(), QtGui.QListWidget):
             e.setDropAction(QtCore.Qt.CopyAction)
-            e.accept()
+            e.acceptProposedAction()
             
             #this happens if a element from the widget list gets dropped
             itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
