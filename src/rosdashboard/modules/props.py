@@ -141,6 +141,47 @@ class WidgetPropertiesDialog(QtGui.QDialog):
     def dialogRejected(self):
         self.reject()
         
+class WidgetSubscriptionDialog(QtGui.QDialog):
+    """ allows to set up the subscription for a dashboard widget """
+    
+    def __init__(self, parent, callback, currentTopic = "", currentDatafield = ""):
+        super(WidgetSubscriptionDialog, self).__init__(parent)
+        
+        self.callback = callback
+        
+        self.topic = currentTopic
+        self.datafield = currentDatafield
+        
+        self.initUI()
+        
+    def initUI(self):
+        self.buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Cancel | 
+                                                QtGui.QDialogButtonBox.Save, 
+                                                parent=self)
+        
+        self.buttonBox.accepted.connect(self.dialogAccepted)
+        self.buttonBox.rejected.connect(self.dialogRejected)
+        
+        self.layout = QtGui.QVBoxLayout()
+        
+        self.topicWidget = TextField(self, "Topic: ", self.topic)
+        self.layout.addWidget(self.topicWidget)
+        self.datafieldWidget = TextField(self, "Datafield: ", self.datafield)
+        self.layout.addWidget(self.datafieldWidget)
+        
+        # The buttons belong to the bottom of the dialog
+        self.layout.addWidget(self.buttonBox)
+        
+        self.setLayout(self.layout)
+        
+    def dialogAccepted(self):
+        self.callback(str(self.topicWidget.getValue()), str(self.datafieldWidget.getValue()))
+
+        self.accept()
+        
+    def dialogRejected(self):
+        self.reject()
+        
 class WidgetRenameDialog(QtGui.QDialog):
     """ allows to set a name for a dashboard widget """
     def __init__(self, parent, callback, defaultName = ''):

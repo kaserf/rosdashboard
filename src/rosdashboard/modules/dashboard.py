@@ -51,6 +51,7 @@ class Dashboard(QtGui.QWidget):
             raise TypeError("The widget you want to remove is not a DashboardWidget: " + str(widget))
         
         widget.hide()
+        widget.teardownSubscription()
         self.widgets.remove(widget)
         
     def showRemoveWidgetBar(self):

@@ -1,5 +1,8 @@
 from PyQt4 import QtGui, QtCore
-from rosdashboard.modules.props import WidgetPropertiesDialog, WidgetRenameDialog
+from rosdashboard.modules.props import WidgetPropertiesDialog, WidgetRenameDialog,\
+    WidgetSubscriptionDialog
+import rospy
+import rostopic
 
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
@@ -8,6 +11,10 @@ class DashboardWidget(QtGui.QGroupBox):
         super(DashboardWidget, self).__init__(parent)
         
         self.setTitle('noname')
+        
+        self.topic = "/your/topic/here"
+        self.datafield = "datafield"
+        self.subscriber = None
         
         self.initContextMenu()
         
@@ -27,10 +34,14 @@ class DashboardWidget(QtGui.QGroupBox):
         self.propertiesAction = QtGui.QAction('Properties', self)
         self.propertiesAction.triggered.connect(self.showConfigDialog)
         
+        self.subscriptionAction = QtGui.QAction('Subscription', self)
+        self.subscriptionAction.triggered.connect(self.showSubscriptionDialog)
+        
         # Context Menu
         self.ctxMenu = QtGui.QMenu(self)
         self.ctxMenu.addAction(self.renameAction)
         self.ctxMenu.addAction(self.propertiesAction)
+        self.ctxMenu.addAction(self.subscriptionAction)
         
     def ctxMenuRequested(self, point):
         self.ctxMenu.exec_(self.mapToGlobal(point))
@@ -76,6 +87,47 @@ class DashboardWidget(QtGui.QGroupBox):
             It should be overwritten in a subclass if special functionality
             (e.g. updating the widget) is needed. """
         pass
+        
+    def showSubscriptionDialog(self):
+        """ shows the default subscription dialog.
+            If custom properties are needed it should be overwritten in the subclass. """
+        dialog = WidgetSubscriptionDialog(self, self._subscriptionDialogCallback, self.topic, self.datafield)
+        dialog.exec_()
+        
+    def _subscriptionDialogCallback(self, newTopic, newDatafield):
+        if (newTopic != ""):
+            self.topic = newTopic
+        if (newDatafield != ""):
+            self.datafield = newDatafield
+            
+        self.setupSubscription()
+        
+    def teardownSubscription(self):
+        #tear down previous subscriber
+        if (self.subscriber != None):
+            print "unregister subscriber: " + self.subscriber.name
+            self.subscriber.unregister()
+            
+    def setupSubscription(self):
+        self.teardownSubscription()
+        
+        # TODO: wrap blocking call to make it async
+        dataClass = rostopic.get_topic_class(self.topic, blocking=False)[0]
+        if dataClass:
+            self.subscriber = rospy.Subscriber(self.topic, dataClass, self.subscriptionCallback)
+        else:
+            print "ERROR: could not find data class for this topic: " + self.topic
+        
+    def subscriptionCallback(self, data):
+        value = getattr(data, self.datafield)
+        self.updateValue(value)
+        
+    def updateValue(self, value):
+        """
+        needs to be overwritten in the subclass to update the
+        value field of whatever widget is displayed.
+        """
+        print "update value: " + value
     
     def getProperties(self):
         """ returns a dictionary of the properties for this widget """
