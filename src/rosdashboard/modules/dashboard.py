@@ -45,6 +45,9 @@ class Dashboard(QtGui.QWidget):
         widget.move(position)
         widget.show()
         
+        #show subscription dialog when added to set up subscriptions initally
+        widget.showSubscriptionDialog()
+        
     def removeWidget(self, widget):
         """ remove a widget from the dashboard """
         if not isinstance(widget, DashboardWidget):
@@ -129,11 +132,12 @@ class WidgetContainer(QtGui.QFrame):
             self.parent.hideRemoveWidgetBar()
             e.accept()
         elif isinstance(e.source(), QtGui.QListWidget):
+            e.setDropAction(QtCore.Qt.CopyAction)
+            e.accept()
+            
             #this happens if a element from the widget list gets dropped
             itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
             self.parent.addWidget(itemDataInstance, e.pos())
-            
-            e.accept()
         else:
             e.ignore()
             raise TypeError('The source for this kind of drag element is not allowed: ' + str(e.source()))

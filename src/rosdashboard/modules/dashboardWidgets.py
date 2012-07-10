@@ -58,7 +58,7 @@ class DashboardWidget(QtGui.QGroupBox):
         drag.setHotSpot(e.pos() - self.rect().topLeft())
 
         dropAction = drag.start(QtCore.Qt.MoveAction)
-    
+
     def initProps(self):
         """ this method should be overwritten in the subclass
             if properties are needed. Examplecode to add properties: 
