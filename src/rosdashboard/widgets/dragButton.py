@@ -14,11 +14,6 @@ class DragButton(DashboardWidget):
         self.updateWidget()
         
     def initProps(self):
-        
-        self.props['datasource'] = WidgetProperty('text', '/turtle1/pose')
-        self.props['datafield'] = WidgetProperty('text', 'linear_velocity')
-        self.props['numeric'] = WidgetProperty('numeric', 17)
-        self.props['float'] = WidgetProperty('float', 17.9)
         self.props['buttonText'] = WidgetProperty('text', "Push Me!")
         
     def initUI(self):
