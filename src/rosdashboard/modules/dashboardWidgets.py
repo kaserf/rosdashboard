@@ -15,6 +15,7 @@ class DashboardWidget(QtGui.QGroupBox):
         self.topic = "/your/topic/here"
         self.datafield = "datafield"
         self.subscriber = None
+        self.listener = None
         
         self.props = dict()
         self.initProps()
@@ -103,7 +104,13 @@ class DashboardWidget(QtGui.QGroupBox):
         if (newDatafield != ""):
             self.datafield = newDatafield
             
-        self.setupSubscription()
+        # create thread for this subscription instance (cancel old one if neccesary)
+        if (self.listener != None):
+            self.listener.terminate()
+        
+        self.listener = TopicListener(self, self.topic)
+        self.listener.topicReadySignal.connect(self.setupSubscription)
+        self.listener.start()
         
     def teardownSubscription(self):
         #tear down previous subscriber
@@ -111,15 +118,16 @@ class DashboardWidget(QtGui.QGroupBox):
             print "unregister subscriber: " + self.subscriber.name
             self.subscriber.unregister()
             
-    def setupSubscription(self):
+    def setupSubscription(self, topic, dataClass):
+        # subscriber only accepts native strings and not QStrings
+        topic = str(topic)
+        
         self.teardownSubscription()
         
-        # TODO: wrap blocking call to make it async
-        dataClass = rostopic.get_topic_class(self.topic, blocking=False)[0]
         if dataClass:
-            self.subscriber = rospy.Subscriber(self.topic, dataClass, self.subscriptionCallback)
+            self.subscriber = rospy.Subscriber(topic, dataClass, self.subscriptionCallback)
         else:
-            print "ERROR: could not find data class for this topic: " + self.topic
+            print "ERROR: could not find data class for this topic: " + topic
         
     def subscriptionCallback(self, data):
         value = getattr(data, self.datafield)
@@ -135,3 +143,22 @@ class DashboardWidget(QtGui.QGroupBox):
     def getProperties(self):
         """ returns a dictionary of the properties for this widget """
         return self.props
+    
+class TopicListener(QtCore.QThread):
+    """
+    this class implements a thread that waits for the type of a topic and connects to it
+    once it comes available
+    """
+    
+    topicReadySignal = QtCore.pyqtSignal(str, type)
+    
+    def __init__(self, parent = None, topic = ""):
+    
+        QtCore.QThread.__init__(self, parent)
+        self.exiting = False
+        self.topic = topic
+        
+    def run(self):
+        dataClass = rostopic.get_topic_class(self.topic, blocking=True)[0]
+        if (dataClass != None):
+            self.topicReadySignal.emit(self.topic, dataClass)
