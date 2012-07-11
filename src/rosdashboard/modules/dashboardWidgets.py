@@ -130,7 +130,7 @@ class DashboardWidget(QtGui.QGroupBox):
         needs to be overwritten in the subclass to update the
         value field of whatever widget is displayed.
         """
-        print "update value: " + value
+        print "update value: " + str(value)
     
     def getProperties(self):
         """ returns a dictionary of the properties for this widget """
