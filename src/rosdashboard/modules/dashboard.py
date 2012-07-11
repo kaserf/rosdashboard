@@ -1,6 +1,5 @@
 from PyQt4 import QtGui, QtCore
 from rosdashboard.modules.dashboardWidgets import DashboardWidget
-import rospy
 
 class Dashboard(QtGui.QWidget):
     """ canvas where widgets can be positioned """ 
