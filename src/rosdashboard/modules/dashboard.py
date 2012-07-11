@@ -101,6 +101,7 @@ class RemoveWidgetBar(QtGui.QStatusBar):
         self.parent.hideRemoveWidgetBar()
 
 class WidgetContainer(QtGui.QFrame):
+    
     def __init__(self, parent):
         super(WidgetContainer, self).__init__(parent)
         
@@ -110,6 +111,9 @@ class WidgetContainer(QtGui.QFrame):
     def initUI(self):
         self.setFrameStyle(QtGui.QFrame.Raised | QtGui.QFrame.StyledPanel)
         self.setAcceptDrops(True)
+        
+    def customEvent(self, event):
+        self.parent.addWidget(event.widget, event.pos)
         
     def dragEnterEvent(self, e):
         
@@ -138,7 +142,12 @@ class WidgetContainer(QtGui.QFrame):
             
             #this happens if a element from the widget list gets dropped
             itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
-            self.parent.addWidget(itemDataInstance, e.pos())
+            
+            #post event. this should allow the drop to be completed before we add the widget.
+            event = QtCore.QEvent(QtCore.QEvent.User)
+            event.widget = itemDataInstance
+            event.pos = e.pos()
+            QtGui.QApplication.postEvent(self, event)
         else:
             e.ignore()
             raise TypeError('The source for this kind of drag element is not allowed: ' + str(e.source()))

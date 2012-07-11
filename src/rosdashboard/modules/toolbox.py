@@ -23,7 +23,7 @@ class Toolbox(QtGui.QGroupBox):
         
         self.listWidget.setDragEnabled(True)
         self.listWidget.setDropIndicatorShown(True)
-        
+                
         self.layout = QtGui.QVBoxLayout()
         self.layout.addWidget(self.listWidget)
         self.setLayout(self.layout)
