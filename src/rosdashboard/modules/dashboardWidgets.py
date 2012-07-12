@@ -12,8 +12,8 @@ class DashboardWidget(QtGui.QGroupBox):
         
         self.setTitle('noname')
         
-        self.topic = "/your/topic/here"
-        self.datafield = "datafield"
+        self.topic = "/rosdashboard/<DEBUG_TAG>"
+        self.datafield = "data"
         self.subscriber = None
         self.listener = None
         
