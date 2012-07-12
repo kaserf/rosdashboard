@@ -1,5 +1,4 @@
 from PyQt4 import QtGui, QtCore
-from rosdashboard.widgets.dragButton import DragButton
 from rosdashboard.widgets.dragDial import DragDial
 from rosdashboard.widgets.dragKnob import DragKnob
 from rosdashboard.widgets.dragCompass import DragCompass
@@ -33,10 +32,10 @@ class Toolbox(QtGui.QGroupBox):
         style = QtGui.QApplication.style()
         
         #TODO: iterate over a list of available widgets -> plugins
-        dragButtonItem = QtGui.QListWidgetItem("Button")
-        dragButtonItem.setIcon(style.standardIcon(QtGui.QStyle.SP_ComputerIcon))
-        dragButtonItem.setData(QtCore.Qt.UserRole, DragButton)
-        self.listWidget.addItem(dragButtonItem)
+        #dragButtonItem = QtGui.QListWidgetItem("Button")
+        #dragButtonItem.setIcon(style.standardIcon(QtGui.QStyle.SP_ComputerIcon))
+        #dragButtonItem.setData(QtCore.Qt.UserRole, DragButton)
+        #self.listWidget.addItem(dragButtonItem)
         
         dragDialItem = QtGui.QListWidgetItem("Dial")
         dragDialItem.setIcon(style.standardIcon(QtGui.QStyle.SP_BrowserReload))
