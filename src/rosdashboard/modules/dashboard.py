@@ -32,14 +32,10 @@ class Dashboard(QtGui.QWidget):
         self.setLayout(self.layout)
         
         
-    def addWidget(self, widget, position = None):
+    def addWidget(self, widget, position):
         """ add widgets to the dashboard """
         if not isinstance(widget, DashboardWidget):
             raise TypeError("The widget you want to add is not a DashboardWidget: " + str(widget))
-        
-        if position == None:
-            #TODO: find a free spot and move widget to the free spot
-            position = QtCore.QPoint(100, 100)
         
         self.widgets.append(widget)
         widget.move(position)
