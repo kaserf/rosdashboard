@@ -11,6 +11,9 @@
   <depend package="rospy"/>
   <depend package="std_msgs"/>
 
+  <depend package="python_qt_binding"/>
+  <rosdep name="python-qt-bindings"/>
+
+  <!-- dependency for PyQt4.Qwt5 -->
+  <rosdep name="python-qwt5-qt4"/>
 </package>
-
-

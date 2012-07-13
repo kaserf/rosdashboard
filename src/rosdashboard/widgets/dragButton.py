@@ -1,5 +1,7 @@
+from python_qt_binding.QtBindingHelper import QT_BINDING, QT_BINDING_VERSION #@UnresolvedImport @UnusedImport
+import QtGui #@UnresolvedImport
+
 from rosdashboard.modules.props import WidgetProperty
-from PyQt4 import QtGui
 from rosdashboard.modules.dashboardWidgets import DashboardWidget
 
 class DragButton(DashboardWidget):

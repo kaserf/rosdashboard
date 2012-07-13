@@ -3,7 +3,9 @@ import roslib; roslib.load_manifest('rosdashboard')
 import rospy
 
 import sys
-from PyQt4 import QtGui
+
+from python_qt_binding.QtBindingHelper import QT_BINDING, QT_BINDING_VERSION #@UnresolvedImport @UnusedImport
+import QtGui #@UnresolvedImport
 
 from modules.dashboard import Dashboard
 from modules.toolbox import Toolbox        

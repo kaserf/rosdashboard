@@ -1,4 +1,7 @@
-from PyQt4 import QtGui, QtCore
+from python_qt_binding.QtBindingHelper import QT_BINDING, QT_BINDING_VERSION #@UnresolvedImport @UnusedImport
+import QtGui #@UnresolvedImport
+import QtCore #@UnresolvedImport
+
 from rosdashboard.modules.dashboardWidgets import DashboardWidget
 
 class Dashboard(QtGui.QWidget):
@@ -136,7 +139,13 @@ class WidgetContainer(QtGui.QFrame):
             e.acceptProposedAction()
             
             #this happens if a element from the widget list gets dropped
-            itemDataInstance = e.source().currentItem().data(QtCore.Qt.UserRole).toPyObject()(self)
+            
+            #convert data payload
+            itemData = e.source().currentItem().data(QtCore.Qt.UserRole)
+            if isinstance(itemData, QtCore.QVariant):
+                itemData = itemData.toPyObject()
+            
+            itemDataInstance = itemData(self)
             
             #post event. this should allow the drop to be completed before we add the widget.
             event = QtCore.QEvent(QtCore.QEvent.User)
