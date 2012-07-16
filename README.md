@@ -49,6 +49,8 @@ Next steps
 ------------
 * add plugin functionality to add more widgets
 * integrate into ROS GUI / rqt
+* allow resizing of widgets
+* add save/restore functionality
 
 Contributing
 ---------
