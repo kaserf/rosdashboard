@@ -18,6 +18,25 @@ Dashboard
 
 The dashboard is a canvas where you can put your widgets on. The widgets are connected to ROS topics through the publish/subscribe mechanism. You can easily configure to which topic you want to subscribe and don't have to specify the message type at all, we take care of that.
 
+API
+-------
+For an up to date version of the API please have a look at src/rosdashboard/api.py
+
+The API is just a simple wrapper to allow one-line publishing of data in your source code. Internally we create a rospy.Publisher() and publish the data to the topic "/rosdashboard/<TAG>", with TAG being the first argument in one of the `log` calls of the API.
+
+### Current API
+* `rosdashboard.log(TAG, DATA)`
+The type of data will be detected automatically if possible
+* `rosdashboard.logint(TAG, VALUE, [MESSAGE_TYPE])`
+Log an integer value. The default message type class is `std_msgs/Int32`
+* `rosdashboard.logfloat(TAG, VALUE, [MESSAGE_TYPE])`
+Log a float value. The default message type class is `std_msgs/Float32`
+* `rosdashboard.logstring(TAG, MESSAGE)`
+Log a string message. The message type is `std_msgs/String`
+* `rosdashboard.logdata(TAG, DATA, MESSAGE_TYPE)`
+Log arbitrary data. This allows you to create more sophisticated messages types and publish time just like you would with a normal rospy.Publisher()
+
+
 Related Tools
 ---------
 If you need more sophisticated visualization of your data there is RViz, which can visualize point clouds and other 3d data in a virtual environment. For datastream analysis there is rxplot, which draws a 2d plot of the data of a specific topic. ROS Dashboard lives somewhere in between, visualizing the data as you would like it to be visualized.
