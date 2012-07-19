@@ -22,7 +22,7 @@ API
 -------
 For an up to date version of the API please have a look at src/rosdashboard/api.py
 
-The API is just a simple wrapper to allow one-line publishing of data in your source code. Internally we create a rospy.Publisher() and publish the data to the topic "/rosdashboard/<TAG>", with TAG being the first argument in one of the `log` calls of the API.
+The API is just a simple wrapper to allow one-line publishing of data in your source code. Internally we create a rospy.Publisher() and publish the data to the topic "/rosdashboard/TAG", with TAG being the first argument in one of the `log` calls of the API.
 
 ### Current API
 * `rosdashboard.log(TAG, DATA)`
