@@ -1,5 +1,6 @@
 
 from .api import logint, logstring, logfloat, log, logdata
+from .rosdashboard import main
 
 """
 rosdashboard exposes the log api, log is a convenience method
@@ -10,5 +11,6 @@ __all__ = [
     'logstring',
     'logfloat',
     'log',
-    'logdata'
+    'logdata',
+    'main'
     ]
