@@ -54,12 +54,20 @@ class DashboardWidget(QtGui.QGroupBox):
         self.ctxMenu.exec_(self.mapToGlobal(point))
     
     def mouseMoveEvent(self, e):
+        
+        hotSpot = e.pos() - self.rect().topLeft()
+
+        #encode the hotspot in the mime data to have access onDrop
+        itemData = QtCore.QByteArray()
+        dataStream = QtCore.QDataStream(itemData, QtCore.QIODevice.WriteOnly)
+        dataStream << QtCore.QPoint(hotSpot)
 
         mimeData = QtCore.QMimeData()
+        mimeData.setData("application/x-dashboardwidget", itemData)
 
         drag = QtGui.QDrag(self)
         drag.setMimeData(mimeData)
-        drag.setHotSpot(e.pos() - self.rect().topLeft())
+        drag.setHotSpot(hotSpot)
 
         dropAction = drag.start(QtCore.Qt.MoveAction)
 

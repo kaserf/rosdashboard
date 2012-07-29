@@ -128,7 +128,19 @@ class WidgetContainer(QtGui.QFrame):
 
         if isinstance(e.source(), DashboardWidget):
             #dashboard widgets are moved on the dashboard
-            e.source().move(e.pos())
+            
+            offset = QtCore.QPoint()
+            
+            #get offset if encoded in the mime data
+            if (e.mimeData().hasFormat("application/x-dashboardwidget")):
+                mime = e.mimeData()
+  
+                itemData = mime.data("application/x-dashboardwidget")
+                dataStream = QtCore.QDataStream(itemData, QtCore.QIODevice.ReadOnly)
+
+                dataStream >> offset
+            
+            e.source().move(e.pos() - offset)
 
             e.setDropAction(QtCore.Qt.MoveAction)
             
