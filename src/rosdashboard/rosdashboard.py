@@ -12,7 +12,7 @@ from modules.toolbox import Toolbox
         
 def main():
     
-    rospy.init_node('dashboard', anonymous=True)
+    rospy.init_node('rosdashboard', anonymous=True)
     
     app = QtGui.QApplication(sys.argv)
     
