@@ -20,6 +20,8 @@ class DashboardWidget(QtGui.QGroupBox):
         self.subscriber = None
         self.listener = None
         
+        self.resizeStartPosition = None
+        
         self.props = dict()
         self.initProps()
         
@@ -27,6 +29,8 @@ class DashboardWidget(QtGui.QGroupBox):
         
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.ctxMenuRequested)
+        
+        self.setMouseTracking(True)
         
     def initContextMenu(self):
         """ this method sets up the context menu of the widget. per default it allows
@@ -53,24 +57,52 @@ class DashboardWidget(QtGui.QGroupBox):
     def ctxMenuRequested(self, point):
         self.ctxMenu.exec_(self.mapToGlobal(point))
     
+    def isResizeArea(self, point):
+        if ((self.rect().bottomRight().x() - point.x() < 10) and
+            (self.rect().bottomRight().y() - point.y() < 10)):
+            return True
+        else:
+            return False
+        
     def mouseMoveEvent(self, e):
         
-        hotSpot = e.pos() - self.rect().topLeft()
+        if (e.buttons() == QtCore.Qt.NoButton):
+            if (self.isResizeArea(e.pos())):
+                self.setCursor(QtGui.QCursor(QtCore.Qt.SizeFDiagCursor))
+            else:
+                self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        
+        #only start drag action if left mouse was clicked
+        if (e.buttons() == QtCore.Qt.LeftButton):
+            
+            if (self.isResizeArea(e.pos()) or self.resizeStartPosition != None):
+                #start resize drag and drop
+                self.resizeStartPosition = e.pos()
+                
+            else:
+                #start move drag and drop
+                hotSpot = e.pos() - self.rect().topLeft()
+        
+                #encode the hotspot in the mime data to have access onDrop
+                itemData = QtCore.QByteArray()
+                dataStream = QtCore.QDataStream(itemData, QtCore.QIODevice.WriteOnly)
+                dataStream << QtCore.QPoint(hotSpot)
+        
+                mimeData = QtCore.QMimeData()
+                mimeData.setData("application/x-dashboardwidget", itemData)
+        
+                drag = QtGui.QDrag(self)
+                drag.setMimeData(mimeData)
+                drag.setHotSpot(hotSpot)
+        
+                dropAction = drag.start(QtCore.Qt.MoveAction)
 
-        #encode the hotspot in the mime data to have access onDrop
-        itemData = QtCore.QByteArray()
-        dataStream = QtCore.QDataStream(itemData, QtCore.QIODevice.WriteOnly)
-        dataStream << QtCore.QPoint(hotSpot)
-
-        mimeData = QtCore.QMimeData()
-        mimeData.setData("application/x-dashboardwidget", itemData)
-
-        drag = QtGui.QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(hotSpot)
-
-        dropAction = drag.start(QtCore.Qt.MoveAction)
-
+    def mouseReleaseEvent(self, event):
+        # finish the resize operation
+        if (self.resizeStartPosition != None):
+            self.resize(self.resizeStartPosition.x(), self.resizeStartPosition.y())
+            self.resizeStartPosition = None
+        
     def initProps(self):
         """ this method should be overwritten in the subclass
             if properties are needed. Examplecode to add properties: 

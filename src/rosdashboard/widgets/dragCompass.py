@@ -17,8 +17,9 @@ class DragCompass(DashboardWidget):
         self.qwtCompass = Qwt.QwtCompass(self)
         self.qwtCompass.setDisabled(True)
         self.qwtCompass.setNeedle(Qwt.QwtDialSimpleNeedle(Qwt.QwtDialSimpleNeedle.Ray))
-        #TODO Make widgets resizeable
-        self.qwtCompass.setFixedSize(150, 150)
+        
+        #initial size
+        self.resize(200,200)
         
         self.layout.addWidget(self.qwtCompass)
         

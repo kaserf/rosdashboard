@@ -20,8 +20,6 @@ class DragKnob(DashboardWidget):
         self.qwtKnob = Qwt.QwtKnob(self)
         self.qwtKnob.setRange(-5,5)
         self.qwtKnob.setDisabled(True)
-        #TODO Make widgets resizeable
-        self.qwtKnob.setFixedSize(150, 150)
         
         self.lcd = QtGui.QLCDNumber(self)
         self.lcd.setSegmentStyle(QtGui.QLCDNumber.Flat)
@@ -29,6 +27,9 @@ class DragKnob(DashboardWidget):
         
         self.layout.addWidget(self.qwtKnob)
         self.layout.addWidget(self.lcd)
+        
+        #initial size
+        self.resize(150,180)
         
         #update widget according to properties
         self.updateWidget()

@@ -20,8 +20,6 @@ class DragDial(DashboardWidget):
         self.qwtDial = Qwt.QwtDial(self)
         self.qwtDial.setRange(-5,5)
         self.qwtDial.setDisabled(True)
-        #TODO Make widgets resizeable
-        self.qwtDial.setFixedSize(150, 150)
         self.qwtDial.setNeedle(Qwt.QwtDialSimpleNeedle(Qwt.QwtDialSimpleNeedle.Ray))
         
         self.lcd = QtGui.QLCDNumber(self)
@@ -30,6 +28,9 @@ class DragDial(DashboardWidget):
         
         self.layout.addWidget(self.qwtDial)
         self.layout.addWidget(self.lcd)
+        
+        #initial size
+        self.resize(200,200)
         
         #update widget according to properties
         self.updateWidget()

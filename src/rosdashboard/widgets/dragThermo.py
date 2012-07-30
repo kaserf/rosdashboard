@@ -20,10 +20,11 @@ class DragThermo(DashboardWidget):
         self.qwtThermo = Qwt.QwtThermo(self)
         self.qwtThermo.setRange(-5,5)
         self.qwtThermo.setDisabled(True)
-        #TODO Make widgets resizeable
-        self.qwtThermo.setFixedHeight(150)
         
         self.layout.addWidget(self.qwtThermo)
+        
+        #initial size
+        self.resize(100,200)
         
         #update widget according to properties
         self.updateWidget()
