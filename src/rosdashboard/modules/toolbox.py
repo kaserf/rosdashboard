@@ -41,26 +41,21 @@ class Toolbox(QtGui.QGroupBox):
         #self.listWidget.addItem(dragButtonItem)
         
         dragDialItem = QtGui.QListWidgetItem("Dial")
-        dragDialItem.setIcon(style.standardIcon(QtGui.QStyle.SP_BrowserReload))
         dragDialItem.setData(QtCore.Qt.UserRole, DragDial)
         self.listWidget.addItem(dragDialItem)
         
         dragKnobItem = QtGui.QListWidgetItem("Knob")
-        dragKnobItem.setIcon(style.standardIcon(QtGui.QStyle.SP_BrowserReload))
         dragKnobItem.setData(QtCore.Qt.UserRole, DragKnob)
         self.listWidget.addItem(dragKnobItem)
         
         dragCompassItem = QtGui.QListWidgetItem("Compass")
-        dragCompassItem.setIcon(style.standardIcon(QtGui.QStyle.SP_BrowserReload))
         dragCompassItem.setData(QtCore.Qt.UserRole, DragCompass)
         self.listWidget.addItem(dragCompassItem)
         
         dragThermoItem = QtGui.QListWidgetItem("Thermo")
-        dragThermoItem.setIcon(style.standardIcon(QtGui.QStyle.SP_MediaPause))
         dragThermoItem.setData(QtCore.Qt.UserRole, DragThermo)
         self.listWidget.addItem(dragThermoItem)
         
         dragStringItem = QtGui.QListWidgetItem("String")
-        dragStringItem.setIcon(style.standardIcon(QtGui.QStyle.SP_ToolBarHorizontalExtensionButton))
         dragStringItem.setData(QtCore.Qt.UserRole, DragString)
         self.listWidget.addItem(dragStringItem)
