@@ -7,6 +7,7 @@ from rosdashboard.widgets.dragKnob import DragKnob
 from rosdashboard.widgets.dragCompass import DragCompass
 from rosdashboard.widgets.dragThermo import DragThermo
 from rosdashboard.widgets.dragString import DragString
+from rosdashboard.widgets.dragLed import DragLed
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """
@@ -31,8 +32,6 @@ class Toolbox(QtGui.QGroupBox):
         self.setLayout(self.layout)
         
     def populateList(self):
-        
-        style = QtGui.QApplication.style()
         
         #TODO: iterate over a list of available widgets -> plugins
         #dragButtonItem = QtGui.QListWidgetItem("Button")
@@ -59,3 +58,7 @@ class Toolbox(QtGui.QGroupBox):
         dragStringItem = QtGui.QListWidgetItem("String")
         dragStringItem.setData(QtCore.Qt.UserRole, DragString)
         self.listWidget.addItem(dragStringItem)
+        
+        dragLEDItem = QtGui.QListWidgetItem("LED")
+        dragLEDItem.setData(QtCore.Qt.UserRole, DragLed)
+        self.listWidget.addItem(dragLEDItem)
