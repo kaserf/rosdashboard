@@ -40,6 +40,8 @@ class Dashboard(QtGui.QWidget):
         if not isinstance(widget, DashboardWidget):
             raise TypeError("The widget you want to add is not a DashboardWidget: " + str(widget))
         
+        self.widgetContainer.hideEmptyLabel()
+        
         self.widgets.append(widget)
         widget.move(position)
         widget.show()
@@ -55,6 +57,9 @@ class Dashboard(QtGui.QWidget):
         widget.hide()
         widget.teardownSubscription()
         self.widgets.remove(widget)
+        
+        if (len(self.widgets) == 0):
+            self.widgetContainer.showEmptyLabel();
         
     def showRemoveWidgetBar(self):
         self.removeWidgetBar.show()
@@ -109,6 +114,22 @@ class WidgetContainer(QtGui.QFrame):
     def initUI(self):
         self.setFrameStyle(QtGui.QFrame.Raised | QtGui.QFrame.StyledPanel)
         self.setAcceptDrops(True)
+        
+        self.layout = QtGui.QVBoxLayout()
+        
+        self.emptyLabel = QtGui.QLabel()
+        self.emptyLabel.setText("<font size= '8'>Drag and drop widgets here!</font>")
+        self.emptyLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.emptyLabel.setStyleSheet("QLabel { color: grey;}")
+        
+        self.layout.addWidget(self.emptyLabel)
+        self.setLayout(self.layout);
+        
+    def showEmptyLabel(self):
+        self.emptyLabel.show()
+        
+    def hideEmptyLabel(self):
+        self.emptyLabel.hide()
         
     def customEvent(self, event):
         self.parent.addWidget(event.widget, event.pos)
