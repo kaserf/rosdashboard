@@ -32,6 +32,9 @@ class DashboardWidget(QtGui.QGroupBox):
         
         self.setMouseTracking(True)
         
+        #set background color orange initially
+        self.setStyleSheet("QGroupBox {background-color:Gold}")
+        
     def initContextMenu(self):
         """ this method sets up the context menu of the widget. per default it allows
             you to rename a widget and setup the subscription for the widget. if there
@@ -147,6 +150,9 @@ class DashboardWidget(QtGui.QGroupBox):
         if (newDatafield != ""):
             self.datafield = newDatafield
             
+        # tear down old subscription
+        self.teardownSubscription()
+            
         # create thread for this subscription instance (cancel old one if neccesary)
         if (self.listener != None):
             self.listener.terminate()
@@ -158,17 +164,21 @@ class DashboardWidget(QtGui.QGroupBox):
     def teardownSubscription(self):
         #tear down previous subscriber
         if (self.subscriber != None):
-            print "unregister subscriber: " + self.subscriber.name
             self.subscriber.unregister()
             
+            #no connection any more
+            self.setStyleSheet("QGroupBox {background-color:Gold}")
+            
     def setupSubscription(self, topic, dataClass):
+        
         # subscriber only accepts native strings and not QStrings
         topic = str(topic)
         
-        self.teardownSubscription()
-        
         if dataClass:
             self.subscriber = rospy.Subscriber(topic, dataClass, self.subscriptionCallback)
+        
+            #we should be connected to a topic now
+            self.setStyleSheet("QGroupBox {background-color:GreenYellow}")
         else:
             print "ERROR: could not find data class for this topic: " + topic
         
