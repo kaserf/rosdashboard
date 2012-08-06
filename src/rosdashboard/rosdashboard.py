@@ -60,11 +60,16 @@ class ROSDashboardMain(QtGui.QMainWindow):
         self.show()
         
     def saveActionTriggered(self):
-        print "save dashboard"
+        fileName, _filter = QtGui.QFileDialog.getSaveFileName(self,
+                                        "Select a file to save your dashboard", filter = "*.json;; *.xml")
+        if (fileName != None and fileName != ""):
+            self.persistance.saveDashboard(fileName)
         
     def loadActionTriggered(self):
-        fileName, filter = QtGui.QFileDialog.getOpenFileName(self, "Select a dashboard json file", filter = "*.json")
-        self.persistance.loadDashboard(fileName)
+        fileName, _filter = QtGui.QFileDialog.getOpenFileName(self,
+                                        "Select a dashboard json file", filter = "*.json;; *.xml")
+        if (fileName != None and fileName != ""):
+            self.persistance.loadDashboard(fileName)
         
 def main():
     

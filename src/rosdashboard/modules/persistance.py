@@ -38,6 +38,24 @@ class Persistance(object):
             self.loadFromJSON(filedata)
         else:
             print "I don't know how to handle file extension " + extension + "; I only know .json and .xml"
+            
+    def saveDashboard(self, filename):
+        # route to save xml or save json
+        name, extension = os.path.splitext(filename)
+        if (extension == ".xml"):
+            print "save to xml: " + filename
+            data = self.saveToJSON()
+        elif (extension == ".json"):
+            print "save to json: " + filename
+            data = self.saveToJSON()
+        else:
+            print "I don't know how to handle file extension " + extension + "; I only know .json and .xml"
+            return
+            
+        #write to file
+        _file = open(filename,'w')
+        _file.write(data)
+        _file.close()
                     
     def loadFromXML(self, filedata):
         print "Not implemented yet"
@@ -90,3 +108,25 @@ class Persistance(object):
             position = QtCore.QPoint(x, y)
 
             self.dashboard.addWidget(instance, position, False)
+            
+    def saveToJSON(self):
+        widgets = list()
+        for widget in self.dashboard.widgets:
+            widgetType = widget.__class__.__name__
+            widgetName = widget.getWidgetName()
+            widgetX = widget.x()
+            widgetY = widget.y()
+            widgetHeight = widget.height()
+            widgetWidth = widget.width()
+            subscription = {"topic": widget.topic, "datafield": widget.datafield}
+            
+            #fill properties
+            props = list()
+            for propKey, prop  in widget.getProperties().iteritems():
+                props.append({"name": propKey, "type": prop.propertyType, "value": prop.value})
+                
+            widgets.append({"type": widgetType, "name": widgetName, "height": widgetHeight,
+                            "width": widgetWidth, "posX": widgetX, "posY":widgetY,
+                            "subscription": subscription, "properties": props})
+            
+        return json.dumps({"widgets": widgets})

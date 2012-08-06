@@ -127,6 +127,9 @@ class DashboardWidget(QtGui.QGroupBox):
     def setWidgetName(self, value):
         if value != '':
             self.setTitle(value)
+    
+    def getWidgetName(self):
+        return self.title()
             
     def showConfigDialog(self):
         """ shows the default properties dialog generated from self.props.
