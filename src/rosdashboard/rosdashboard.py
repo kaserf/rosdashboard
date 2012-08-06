@@ -63,8 +63,8 @@ class ROSDashboardMain(QtGui.QMainWindow):
         print "save dashboard"
         
     def loadActionTriggered(self):
-        print "load dashboard"
-        self.persistance.loadDashboard("/home/felix/projects/ros-workspace/rosdashboard/res/test_config.json")
+        fileName, filter = QtGui.QFileDialog.getOpenFileName(self, "Select a dashboard json file", filter = "*.json")
+        self.persistance.loadDashboard(fileName)
         
 def main():
     

@@ -54,17 +54,28 @@ class Dashboard(QtGui.QWidget):
             #show subscription dialog when added to set up subscriptions initally
             widget.showSubscriptionDialog()
         
-    def removeWidget(self, widget):
-        """ remove a widget from the dashboard """
+    def _removeWidget(self, widget):
         if not isinstance(widget, DashboardWidget):
             raise TypeError("The widget you want to remove is not a DashboardWidget: " + str(widget))
         
         widget.hide()
         widget.teardownSubscription()
+        
+    def removeWidget(self, widget):
+        """ remove a widget from the dashboard """
         self.widgets.remove(widget)
         
         if (len(self.widgets) == 0):
             self.widgetContainer.showEmptyLabel();
+            
+    def clearDashboard(self):
+        for widget in self.widgets:
+            self._removeWidget(widget)
+        
+        # clear the list
+        self.widgets = list()
+        self.widgetContainer.showEmptyLabel();
+        
         
     def showRemoveWidgetBar(self):
         self.removeWidgetBar.show()

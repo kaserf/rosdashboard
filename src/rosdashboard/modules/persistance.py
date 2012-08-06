@@ -1,5 +1,4 @@
 from python_qt_binding.QtBindingHelper import QT_BINDING, QT_BINDING_VERSION #@UnresolvedImport @UnusedImport
-import QtGui #@UnresolvedImport
 import QtCore #@UnresolvedImport
 
 #import xml.dom.minidom as minidom
@@ -13,6 +12,7 @@ from rosdashboard.widgets.dragCompass import DragCompass
 from rosdashboard.widgets.dragThermo import DragThermo
 from rosdashboard.widgets.dragString import DragString
 from rosdashboard.widgets.dragLed import DragLed
+
 from rosdashboard.modules.props import WidgetProperty
 
 class Persistance(object):
@@ -20,10 +20,15 @@ class Persistance(object):
         self.dashboard = dashboard
         
     def loadDashboard(self, filename):
+        # clear old dashboard
+        self.dashboard.clearDashboard()
+        
+        # get file data
         _file = open(filename,'r')
         filedata = _file.read()
         _file.close()
         
+        # parse file data
         name, extension = os.path.splitext(filename)
         if (extension == ".xml"):
             print "load from xml: " + filename
@@ -53,12 +58,10 @@ class Persistance(object):
     def loadFromJSON(self, filedata):
         data = json.loads(filedata)
         for widget in data["widgets"]:
-            print "adding widget " + widget["name"]
             
             # load properties
             props = dict()
             for prop in widget["properties"]:
-                print "properties: " + str(prop)
                 propName = str(prop["name"])
                 propType = str(prop["type"])
                 propValue = prop["value"]
@@ -68,6 +71,10 @@ class Persistance(object):
             topic = widget["subscription"]["topic"]
             datafield = widget["subscription"]["datafield"]
             
+            # load geometry
+            height = widget["height"]
+            width = widget["width"]
+            
             # load widget class
             typename = str(widget["type"])
             constructor = globals()[typename]
@@ -76,10 +83,10 @@ class Persistance(object):
             instance.setProperties(props)
             instance.setSubscription(topic, datafield)
             instance.setWidgetName(widget["name"])
+            instance.resize(width, height)
             
             x = widget["posX"]
             y = widget["posY"]
-            print "x: " + str(x) + ", y: " + str(y)
             position = QtCore.QPoint(x, y)
 
             self.dashboard.addWidget(instance, position, False)
