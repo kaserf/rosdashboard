@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<dashboard xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="dashboard.xsd">
+  <widget>
+    <type>DragDial</type>
+    <posX>120</posX>
+    <posY>120</posY>
+    <height>100</height>
+    <width>100</width>
+
+    <name>TestWidget</name>
+    <subscription>
+      <topic>/rosdashboar/test</topic>
+      <datafield>data</datafield>
+    </subscription>
+
+    <properties>
+      <property>
+        <name>minimum</name>
+        <type>numeric</type>
+        <value>-8</value>
+      </property>
+      <property>
+        <name>maximum</name>
+        <type>numeric</type>
+        <value>8</value>
+      </property>
+    </properties>
+  </widget>
+</dashboard>

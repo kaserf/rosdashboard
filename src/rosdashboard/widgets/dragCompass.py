@@ -7,7 +7,7 @@ from PyQt4.Qwt5 import Qwt
 class DragCompass(DashboardWidget):
     """ draggable compass"""
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragCompass, self).__init__(parent)
         self.setTitle('DragCompass')
         self.initUI()

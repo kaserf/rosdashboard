@@ -1,0 +1,56 @@
+{
+"widgets": [
+  {
+    "type": "DragDial",
+    "name": "TestWidget",
+    "height": 100,
+    "width": 100,
+    "posX": 120,
+    "posY": 100,
+    "subscription":
+      {
+        "topic": "/rosdashboard/testdial",
+        "datafield": "data"
+      },
+    "properties":
+      [
+        {
+          "name": "minimum",
+          "type": "numeric",
+          "value": -8
+        },
+        {
+          "name": "maximum",
+          "type": "numeric",
+          "value": 8
+        }
+      ]
+  },
+  {
+    "type": "DragKnob",
+    "name": "TestKnob",
+    "height": 100,
+    "width": 100,
+    "posX": 220,
+    "posY": 200,
+    "subscription":
+      {
+        "topic": "/rosdashboard/testknob",
+        "datafield": "data"
+      },
+    "properties":
+      [
+        {
+          "name": "minimum",
+          "type": "numeric",
+          "value": -4
+        },
+        {
+          "name": "maximum",
+          "type": "numeric",
+          "value": 4
+        }
+      ]
+  }
+]
+}

@@ -6,7 +6,7 @@ from rosdashboard.modules.dashboardWidgets import DashboardWidget
 
 class DragButton(DashboardWidget):
     """ drag textField wrapper """
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragButton, self).__init__(parent)
         self.setTitle('DragButton')
         

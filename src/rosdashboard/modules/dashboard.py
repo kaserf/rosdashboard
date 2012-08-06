@@ -34,20 +34,25 @@ class Dashboard(QtGui.QWidget):
         self.layout.addWidget(self.removeWidgetBar)
         self.setLayout(self.layout)
         
-        
-    def addWidget(self, widget, position):
-        """ add widgets to the dashboard """
+    def _addWidget(self, widget, position):
         if not isinstance(widget, DashboardWidget):
             raise TypeError("The widget you want to add is not a DashboardWidget: " + str(widget))
         
         self.widgetContainer.hideEmptyLabel()
         
         self.widgets.append(widget)
+        
+        widget.setParent(self.widgetContainer)
         widget.move(position)
         widget.show()
         
-        #show subscription dialog when added to set up subscriptions initally
-        widget.showSubscriptionDialog()
+    def addWidget(self, widget, position, showDialog = True):
+        """ add widgets to the dashboard """
+        self._addWidget(widget, position)
+        
+        if (showDialog):
+            #show subscription dialog when added to set up subscriptions initally
+            widget.showSubscriptionDialog()
         
     def removeWidget(self, widget):
         """ remove a widget from the dashboard """
@@ -178,7 +183,7 @@ class WidgetContainer(QtGui.QFrame):
             if isinstance(itemData, QtCore.QVariant):
                 itemData = itemData.toPyObject()
             
-            itemDataInstance = itemData(self)
+            itemDataInstance = itemData()
             
             #post event. this should allow the drop to be completed before we add the widget.
             event = QtCore.QEvent(QtCore.QEvent.User)

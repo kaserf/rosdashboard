@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="dashboard">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="widget" type="widget" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+
+<xs:complexType name="widget">
+  <xs:sequence>
+    <xs:element name="type" type="xs:string"/>
+    <xs:element name="posX" type="xs:integer"/>
+    <xs:element name="posY" type="xs:integer"/>
+    <xs:element name="height" type="xs:integer"/>
+    <xs:element name="width" type="xs:integer"/>
+    
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="subscription" type="subscription"/>
+    <xs:element name="properties" type="properties"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subscription">
+  <xs:sequence>
+    <xs:element name="topic" type="xs:string"/>
+    <xs:element name="datafield" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="properties">
+  <xs:sequence>
+      <xs:element name="property" type="property" maxOccurs="unbounded" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="property">
+  <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+
+      <xs:element name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="numeric"/>
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="float"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      
+      <xs:element name="value" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+</xs:schema>

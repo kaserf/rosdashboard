@@ -10,7 +10,7 @@ class DragDial(DashboardWidget):
     MIN = 'minimum'
     MAX = 'maximum'
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragDial, self).__init__(parent)
         self.setTitle('DragDial')
         self.initUI()

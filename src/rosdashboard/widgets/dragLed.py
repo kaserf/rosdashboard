@@ -10,7 +10,7 @@ from rosdashboard.modules.dashboardWidgets import DashboardWidget
 class DragLed(DashboardWidget):
     updateUiSignal = QtCore.pyqtSignal(QtGui.QImage)
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragLed, self).__init__(parent)
         self.setTitle('DragLed')
         

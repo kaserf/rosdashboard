@@ -9,23 +9,27 @@ import QtGui #@UnresolvedImport
 
 from modules.dashboard import Dashboard
 from modules.toolbox import Toolbox        
+from modules.persistance import Persistance
         
 class ROSDashboardMain(QtGui.QMainWindow):
     def __init__(self):
         super(ROSDashboardMain, self).__init__()
 
+        self.toolbox = Toolbox(self)
+        self.dashboard = Dashboard(self)
+        
+        self.persistance = Persistance(self.dashboard)
+        
         self.initUi()
         
     def initUi(self):
         saveAction = QtGui.QAction('Save dashboard', self)
         saveAction.setStatusTip('Save the current dashboard to file')
-        #self.saveAction.triggered.connect(self.showRenameDialog)
-        #self.ctxMenu.addAction(self.renameAction)
+        saveAction.triggered.connect(self.saveActionTriggered)
         
         loadAction = QtGui.QAction('Load dashboard', self)
         loadAction.setStatusTip('Load a dashboard from file')
-        #self.loadAction.triggered.connect(self.showSubscriptionDialog)
-        #self.ctxMenu.addAction(self.subscriptionAction)
+        loadAction.triggered.connect(self.loadActionTriggered)
         
         exitAction = QtGui.QAction('Exit', self)
         exitAction.setStatusTip('Exit rosdashboard')
@@ -44,11 +48,8 @@ class ROSDashboardMain(QtGui.QMainWindow):
         centralWidget = QtGui.QWidget()
         layout = QtGui.QHBoxLayout()
         
-        toolbox = Toolbox(self)
-        layout.addWidget(toolbox)
-        
-        dashboard = Dashboard(self)
-        layout.addWidget(dashboard)
+        layout.addWidget(self.toolbox)
+        layout.addWidget(self.dashboard)
         
         layout.setStretch(0, 20)
         layout.setStretch(1, 80)
@@ -63,6 +64,7 @@ class ROSDashboardMain(QtGui.QMainWindow):
         
     def loadActionTriggered(self):
         print "load dashboard"
+        self.persistance.loadDashboard("/home/felix/projects/ros-workspace/rosdashboard/res/test_config.json")
         
 def main():
     

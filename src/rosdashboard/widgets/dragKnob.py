@@ -10,7 +10,7 @@ class DragKnob(DashboardWidget):
     MIN = 'minimum'
     MAX = 'maximum'
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragKnob, self).__init__(parent)
         self.setTitle('DragKnob')
         self.initUI()

@@ -10,7 +10,7 @@ class DragThermo(DashboardWidget):
     MIN = 'minimum'
     MAX = 'maximum'
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragThermo, self).__init__(parent)
         self.setTitle('DragThermo')
         self.initUI()

@@ -6,7 +6,7 @@ from rosdashboard.modules.dashboardWidgets import DashboardWidget
 class DragString(DashboardWidget):
     """ draggable text field """
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DragString, self).__init__(parent)
         self.setTitle('DragString')
         self.initUI()
@@ -20,6 +20,9 @@ class DragString(DashboardWidget):
         self.layout.addWidget(self.textField)
         
         self.setLayout(self.layout)
+        
+        #initial size
+        self.resize(200,80)
         
     def initProps(self):
         pass

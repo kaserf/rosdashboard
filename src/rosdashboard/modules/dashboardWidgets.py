@@ -10,7 +10,7 @@ import rostopic
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
     
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super(DashboardWidget, self).__init__(parent)
         
         self.setTitle('noname')
@@ -122,6 +122,9 @@ class DashboardWidget(QtGui.QGroupBox):
         """ this method will be hooked to the rename dialog accept signal.
             It should be overwritten in a subclass if special functionality
             is needed. """
+        self.setWidgetName(value)
+        
+    def setWidgetName(self, value):
         if value != '':
             self.setTitle(value)
             
@@ -145,6 +148,9 @@ class DashboardWidget(QtGui.QGroupBox):
         dialog.exec_()
         
     def _subscriptionDialogCallback(self, newTopic, newDatafield):
+        self.setSubscription(newTopic, newDatafield)
+        
+    def setSubscription(self, newTopic, newDatafield):
         if (newTopic != ""):
             self.topic = newTopic
         if (newDatafield != ""):
@@ -196,6 +202,11 @@ class DashboardWidget(QtGui.QGroupBox):
     def getProperties(self):
         """ returns a dictionary of the properties for this widget """
         return self.props
+    
+    def setProperties(self, newProps):
+        self.props = newProps
+        # this should refresh the widget but depends how the subclasses implemented it.
+        self.propertiesDialogAccepted()
     
 class TopicListener(QtCore.QThread):
     """
