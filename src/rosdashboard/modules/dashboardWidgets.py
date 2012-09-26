@@ -181,7 +181,7 @@ class DashboardWidget(QtGui.QGroupBox):
     def setupSubscription(self, topic, dataClass):
         
         # subscriber only accepts native strings and not QStrings
-        topic = str(topic)
+        topic = str(topic) 
         
         if dataClass:
             self.subscriber = rospy.Subscriber(topic, dataClass, self.subscriptionCallback)
@@ -192,8 +192,12 @@ class DashboardWidget(QtGui.QGroupBox):
             print "ERROR: could not find data class for this topic: " + topic
         
     def subscriptionCallback(self, data):
-        value = getattr(data, self.datafield)
-        self.updateValue(value)
+        value = getattr(data, self.datafield, None)
+
+        if (value != None):
+          self.updateValue(value)
+        else:
+          print "ERROR: The datafield <" + self.datafield + "> for the topic <" + self.topic + "> is not defined"
         
     def updateValue(self, value):
         """
