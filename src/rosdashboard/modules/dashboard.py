@@ -63,6 +63,7 @@ class Dashboard(QtGui.QWidget):
         
     def removeWidget(self, widget):
         """ remove a widget from the dashboard """
+        self._removeWidget(widget)
         self.widgets.remove(widget)
         
         if (len(self.widgets) == 0):
