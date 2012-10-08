@@ -9,6 +9,9 @@ import rostopic
 
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
+
+    #signal to propagate new values from the subscription callback to the ui thread
+    newValueSignal = QtCore.pyqtSignal(object)
     
     def __init__(self, parent = None):
         super(DashboardWidget, self).__init__(parent)
@@ -19,6 +22,9 @@ class DashboardWidget(QtGui.QGroupBox):
         self.datafield = "data"
         self.subscriber = None
         self.listener = None
+
+        #connect to our own newValueSignal, emitted in subscription callback
+        self.newValueSignal.connect(self.updateValue)
         
         self.resizeStartPosition = None
         
@@ -195,7 +201,8 @@ class DashboardWidget(QtGui.QGroupBox):
         value = getattr(data, self.datafield, None)
 
         if (value != None):
-          self.updateValue(value)
+          # signal event, since this method is not called from the ui thread and is potentially dangerous
+          self.newValueSignal.emit(value)
         else:
           print "ERROR: The datafield <" + self.datafield + "> for the topic <" + self.topic + "> is not defined"
         
