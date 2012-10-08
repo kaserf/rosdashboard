@@ -8,6 +8,7 @@ from rosdashboard.widgets.dragCompass import DragCompass
 from rosdashboard.widgets.dragThermo import DragThermo
 from rosdashboard.widgets.dragString import DragString
 from rosdashboard.widgets.dragLed import DragLed
+from rosdashboard.widgets.dragPlot import DragPlot
 
 class Toolbox(QtGui.QGroupBox):
     """ widget toolbox to choose widgets from """
@@ -62,3 +63,7 @@ class Toolbox(QtGui.QGroupBox):
         dragLEDItem = QtGui.QListWidgetItem("LED")
         dragLEDItem.setData(QtCore.Qt.UserRole, DragLed)
         self.listWidget.addItem(dragLEDItem)
+        
+        dragPlotItem = QtGui.QListWidgetItem("Plot")
+        dragPlotItem.setData(QtCore.Qt.UserRole, DragPlot)
+        self.listWidget.addItem(dragPlotItem)
