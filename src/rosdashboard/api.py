@@ -1,5 +1,5 @@
 import rospy
-from std_msgs.msg import String, Int32, Float32
+from std_msgs.msg import String, Int32, Float32, Bool
 
 def log(tag, data):
     """
@@ -7,8 +7,8 @@ def log(tag, data):
     Be careful to use only valid tags, ros does not allow dashes and dots in
     the topic name.
     
-    The method first determines if you want to publish a string, integer or float
-    and then redirects the call to logstring, logint or logfloat.
+    The method first determines if you want to publish a string, integer, float
+    or boolean and then redirects the call to logstring, logint, logfloat or logbool.
     """
     if type(data) == int:
         logint(tag, data)
@@ -16,6 +16,8 @@ def log(tag, data):
         logstring(tag, data)
     elif type(data) == float:
         logfloat(tag, data)
+    elif type(data) == bool:
+        logbool(tag, data)
     else:
         print "Could not determine the type of data: " + str(type(data))
 
@@ -49,6 +51,17 @@ def logfloat(tag, value, msg_type=Float32):
     """
     pub = rospy.Publisher('/rosdashboard/' + tag, msg_type)
     pub.publish(msg_type(value))
+
+def logbool(tag, value):
+    """
+    publishes a boolean value to the /rosdashboard/<tag> topic
+    Be careful to use only valid tags, ros does not allow dashes and dots in
+    the topic name.
+    
+    The message type is std_msg.msg.Bool
+    """
+    pub = rospy.Publisher('/rosdashboard/' + tag, Bool)
+    pub.publish(value)
 
 def logdata(tag, data, msg_type):
     """

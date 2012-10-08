@@ -1,5 +1,5 @@
 
-from .api import logint, logstring, logfloat, log, logdata
+from .api import logint, logstring, logfloat, log, logdata, logbool
 from .rosdashboard import main
 
 """
@@ -11,6 +11,7 @@ __all__ = [
     'logstring',
     'logfloat',
     'log',
+    'logbool',
     'logdata',
     'main'
     ]
