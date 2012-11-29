@@ -145,13 +145,14 @@ class WidgetPropertiesDialog(QtGui.QDialog):
 class WidgetSubscriptionDialog(QtGui.QDialog):
     """ allows to set up the subscription for a dashboard widget """
     
-    def __init__(self, parent, callback, currentTopic = "", currentDatafield = ""):
+    def __init__(self, parent, callback, currentTopic = "", currentDatafield = "", currentRegex = ""):
         super(WidgetSubscriptionDialog, self).__init__(parent)
         
         self.callback = callback
         
         self.topic = currentTopic
         self.datafield = currentDatafield
+        self.regex = currentRegex
         
         self.initUI()
         
@@ -169,6 +170,11 @@ class WidgetSubscriptionDialog(QtGui.QDialog):
         self.layout.addWidget(self.topicWidget)
         self.datafieldWidget = TextField(self, "Datafield: ", self.datafield)
         self.layout.addWidget(self.datafieldWidget)
+
+        self.regexLabel = QtGui.QLabel("You can use a regex to extract numbers from string messages.\n'.*' matches everything.", self)
+        self.layout.addWidget(self.regexLabel)
+        self.regexWidget = TextField(self, "Regex: ", self.regex)
+        self.layout.addWidget(self.regexWidget)
         
         # The buttons belong to the bottom of the dialog
         self.layout.addWidget(self.buttonBox)
@@ -176,7 +182,9 @@ class WidgetSubscriptionDialog(QtGui.QDialog):
         self.setLayout(self.layout)
         
     def dialogAccepted(self):
-        self.callback(str(self.topicWidget.getValue()), str(self.datafieldWidget.getValue()))
+        self.callback(str(self.topicWidget.getValue()),
+                      str(self.datafieldWidget.getValue()),
+                      str(self.regexWidget.getValue()))
 
         self.accept()
         

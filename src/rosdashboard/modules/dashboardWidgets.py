@@ -7,6 +7,8 @@ from rosdashboard.modules.props import WidgetPropertiesDialog, WidgetRenameDialo
 import rospy
 import rostopic
 
+import re
+
 class DashboardWidget(QtGui.QGroupBox):
     """ base class for draggable widgets """
 
@@ -20,6 +22,7 @@ class DashboardWidget(QtGui.QGroupBox):
         
         self.topic = "/rosdashboard/<DEBUG_TAG>"
         self.datafield = "data"
+        self.regex = ".*"
         self.subscriber = None
         self.listener = None
 
@@ -153,18 +156,24 @@ class DashboardWidget(QtGui.QGroupBox):
     def showSubscriptionDialog(self):
         """ shows the default subscription dialog.
             If custom properties are needed it should be overwritten in the subclass. """
-        dialog = WidgetSubscriptionDialog(self, self._subscriptionDialogCallback, self.topic, self.datafield)
+        dialog = WidgetSubscriptionDialog(self, self._subscriptionDialogCallback,
+                                          self.topic, self.datafield, self.regex)
         dialog.exec_()
         
-    def _subscriptionDialogCallback(self, newTopic, newDatafield):
-        self.setSubscription(newTopic, newDatafield)
+    def _subscriptionDialogCallback(self, newTopic, newDatafield, newRegex):
+        self.setSubscription(newTopic, newDatafield, newRegex)
         
-    def setSubscription(self, newTopic, newDatafield):
+    def setSubscription(self, newTopic, newDatafield, newRegex):
         if (newTopic != ""):
             self.topic = newTopic
         if (newDatafield != ""):
             self.datafield = newDatafield
-            
+
+        # allow empty regex
+        self.regex = newRegex
+
+        print "do something with the new regex: " + newRegex
+
         # tear down old subscription
         self.teardownSubscription()
             
@@ -199,8 +208,13 @@ class DashboardWidget(QtGui.QGroupBox):
         
     def subscriptionCallback(self, data):
         value = getattr(data, self.datafield, None)
-
+        
         if (value != None):
+          # match regex first, before signaling the ui thread
+          if (self.regex != ""):
+            matchedValue = re.search(self.regex, value)
+            print "regex match: " + matchedValue.group(0)
+
           # signal event, since this method is not called from the ui thread and is potentially dangerous
           self.newValueSignal.emit(value)
         else:
