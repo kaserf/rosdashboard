@@ -29,4 +29,4 @@ class DragCompass(DashboardWidget):
         pass
     
     def updateValue(self, value):
-        self.qwtCompass.setValue(value)
+        self.qwtCompass.setValue(float(value))

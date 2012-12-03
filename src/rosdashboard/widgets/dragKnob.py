@@ -49,4 +49,4 @@ class DragKnob(DashboardWidget):
                               self.props[self.MAX].value)
         
     def updateValue(self, value):
-        self.qwtKnob.setValue(value)
+        self.qwtKnob.setValue(float(value))

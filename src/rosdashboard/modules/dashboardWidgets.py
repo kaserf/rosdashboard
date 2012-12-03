@@ -172,8 +172,6 @@ class DashboardWidget(QtGui.QGroupBox):
         # allow empty regex
         self.regex = newRegex
 
-        print "do something with the new regex: " + newRegex
-
         # tear down old subscription
         self.teardownSubscription()
             
@@ -212,8 +210,11 @@ class DashboardWidget(QtGui.QGroupBox):
         if (value != None):
           # match regex first, before signaling the ui thread
           if (self.regex != ""):
+            # allow to match non-strings as well by converting to string first
+            value = str(value)
             matchedValue = re.search(self.regex, value)
-            print "regex match: " + matchedValue.group(0)
+            if (matchedValue != None):
+              value = matchedValue.group(0)
 
           # signal event, since this method is not called from the ui thread and is potentially dangerous
           self.newValueSignal.emit(value)

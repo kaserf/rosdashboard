@@ -44,4 +44,4 @@ class DragThermo(DashboardWidget):
                                 self.props[self.MAX].value)
 
     def updateValue(self, value):
-        self.qwtThermo.setValue(value)
+        self.qwtThermo.setValue(float(value))

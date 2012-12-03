@@ -112,4 +112,4 @@ class DragPlot(DashboardWidget):
         self.currentTimerId = self.qwtPlot.startTimer(self.props[self.RATE].value)
         
     def updateValue(self, value):
-        self.qwtPlot.addValue(value)
+        self.qwtPlot.addValue(float(value))

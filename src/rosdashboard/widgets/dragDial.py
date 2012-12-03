@@ -50,4 +50,4 @@ class DragDial(DashboardWidget):
                               self.props[self.MAX].value)
         
     def updateValue(self, value):
-        self.qwtDial.setValue(value)
+        self.qwtDial.setValue(float(value))
