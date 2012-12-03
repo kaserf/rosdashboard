@@ -88,6 +88,7 @@ class Persistance(object):
             # load subscription
             topic = widget["subscription"]["topic"]
             datafield = widget["subscription"]["datafield"]
+            regex = widget["subscription"]["regex"]
             
             # load geometry
             height = widget["height"]
@@ -99,7 +100,7 @@ class Persistance(object):
             instance = constructor()
             
             instance.setProperties(props)
-            instance.setSubscription(topic, datafield)
+            instance.setSubscription(topic, datafield, regex)
             instance.setWidgetName(widget["name"])
             instance.resize(width, height)
             
@@ -118,7 +119,7 @@ class Persistance(object):
             widgetY = widget.y()
             widgetHeight = widget.height()
             widgetWidth = widget.width()
-            subscription = {"topic": widget.topic, "datafield": widget.datafield}
+            subscription = {"topic": widget.topic, "datafield": widget.datafield, "regex": widget.regex}
             
             #fill properties
             props = list()
